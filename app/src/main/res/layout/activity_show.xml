@@ -1,0 +1,313 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="comvoice.example.zhangbin.startimage.activity.MainActivity"
+    android:orientation="vertical">
+    <include layout="@layout/title_bar"></include>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/viewHeight"></View>
+    <TableLayout
+        android:id="@+id/tl"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:shrinkColumns="0,1,2,3,4,5,6,7,8,9,10"
+        android:stretchColumns="0,1,2,3,4,5,6,7,8,9,10"
+        android:layout_marginLeft="10dp"
+        >
+        <TableRow
+            android:focusable="true"
+            android:focusableInTouchMode="true">
+            <TextView
+                android:id="@+id/tv_1"
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:layout_span="2"
+                android:padding="2dp"
+                android:text="@string/screenId"
+                android:textAllCaps="false"
+                android:textSize="@dimen/textSize" />
+
+            <EditText
+                android:id="@+id/et_pScrennID"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="5dp"
+                android:layout_span="8"
+                android:background="@drawable/edittext_select"
+                android:hint="@string/mustInput"
+                android:padding="2dp"
+                android:textColorHint="@color/main_color"
+                android:textAllCaps="false"
+                android:textSize="@dimen/textSize"
+                />
+        </TableRow>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/viewHeight"></View>
+        <TableRow android:id="@+id/tr"
+            android:focusable="true"
+            android:focusableInTouchMode="true">
+            <TextView
+                android:id="@+id/tv_2"
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:layout_span="2"
+                android:padding="2dp"
+                android:text="@string/name"
+                android:textAllCaps="false"
+                android:textSize="@dimen/textSize" />
+
+            <EditText
+                android:id="@+id/et_pName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="5dp"
+                android:layout_span="8"
+                android:background="@drawable/edittext_select"
+                android:hint="@string/mustInput"
+                android:padding="2dp"
+                android:textColorHint="@color/main_color"
+                android:textAllCaps="false"
+                android:textSize="@dimen/textSize"
+                />
+        </TableRow>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/viewHeight"></View>
+        <TableRow >
+
+            <TextView
+                android:id="@+id/tv_3"
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:layout_span="2"
+                android:padding="2dp"
+                android:text="@string/age"
+                android:textAllCaps="false"
+                android:textSize="@dimen/textSize" />
+
+            <EditText
+                android:id="@+id/et_pAge"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="5dp"
+                android:layout_span="8"
+                android:background="@drawable/edittext_select"
+                android:hint="@string/mustInput"
+                android:padding="2dp"
+                android:textColorHint="@color/main_color"
+                android:textAllCaps="false"
+                android:textSize="@dimen/textSize"
+                />
+        </TableRow>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/viewHeight"></View>
+        <TableRow >
+
+            <TextView
+                android:id="@+id/tv_4"
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:layout_span="2"
+                android:padding="2dp"
+                android:text="@string/phone"
+                android:textAllCaps="false"
+                android:textSize="@dimen/textSize" />
+
+            <EditText
+                android:id="@+id/et_pPhone"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="5dp"
+                android:layout_span="8"
+                android:background="@drawable/edittext_select"
+                android:hint="@string/mustInput"
+                android:padding="2dp"
+                android:textColorHint="@color/main_color"
+                android:textAllCaps="false"
+                android:textSize="@dimen/textSize"
+                />
+        </TableRow>
+        <!--<View-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="@dimen/viewHeight"></View>-->
+        <!--<TableRow>-->
+
+            <!--<TextView-->
+                <!--android:id="@+id/tv_5"-->
+                <!--android:layout_width="100dp"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_span="2"-->
+                <!--android:padding="2dp"-->
+                <!--android:text="@string/ID"-->
+                <!--android:textAllCaps="false"-->
+                <!--android:textSize="@dimen/textSize" />-->
+
+            <!--<EditText-->
+                <!--android:id="@+id/et_pID"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_marginRight="5dp"-->
+                <!--android:layout_span="8"-->
+                <!--android:background="@drawable/edittext_select"-->
+                <!--android:hint="@string/Required"-->
+                <!--android:padding="2dp"-->
+                <!--android:textAllCaps="false"-->
+                <!--android:textSize="@dimen/textSize"-->
+                <!--/>-->
+        <!--</TableRow>-->
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/viewHeight"></View>
+        <TableRow>
+
+            <TextView
+                android:id="@+id/tv_6"
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:layout_span="2"
+                android:padding="2dp"
+                android:text="@string/RequiredHPV"
+                android:textAllCaps="false"
+                android:textSize="@dimen/textSize" />
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginRight="5dp"
+                android:layout_span="8">
+                <EditText
+                    android:id="@+id/et_pHPV"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="5dp"
+                    android:layout_span="8"
+                    android:background="@drawable/edittext_select"
+                    android:hint="@string/Required"
+                    android:padding="2dp"
+                    android:textAllCaps="false"
+                    android:textSize="@dimen/textSize"
+                    />
+                <ImageView
+                    android:id="@+id/iv_scanhpv"
+                    android:layout_width="40dp"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:src="@drawable/scanning"
+                    android:padding="2dp"
+                    />
+            </RelativeLayout>
+
+        </TableRow>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/viewHeight"></View>
+        <!--<TableRow>-->
+
+        <!--<TextView-->
+        <!--android:id="@+id/tv_5"-->
+        <!--android:layout_width="100dp"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_span="2"-->
+        <!--android:padding="2dp"-->
+        <!--android:text="@string/RequiredCytology"-->
+        <!--android:textAllCaps="false"-->
+        <!--android:textSize="@dimen/textSize" />-->
+        <!--<RelativeLayout-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="match_parent"-->
+        <!--android:layout_marginRight="5dp"-->
+        <!--android:layout_span="8">-->
+        <!--<EditText-->
+        <!--android:id="@+id/et_pTCT"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_marginRight="5dp"-->
+        <!--android:layout_span="8"-->
+        <!--android:background="@drawable/edittext_select"-->
+        <!--android:hint="@string/Required"-->
+        <!--android:padding="2dp"-->
+        <!--android:textAllCaps="false"-->
+        <!--android:textSize="@dimen/textSize"-->
+        <!--/>-->
+        <!--<ImageView-->
+        <!--android:id="@+id/iv_scanxbx"-->
+        <!--android:layout_width="40dp"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_alignParentRight="true"-->
+        <!--android:src="@drawable/scanning"-->
+        <!--android:padding="2dp"-->
+        <!--/>-->
+        <!--</RelativeLayout>-->
+
+        <!--</TableRow>-->
+        <LinearLayout
+            android:id="@+id/ll_main"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+    </TableLayout>
+    <View
+        android:id="@+id/view1"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/viewHeight"></View>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:layout_marginTop="50dp"
+        >
+        <Button
+            android:id="@+id/bt_clear"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:text="@string/clear_wifi"
+            android:background="@drawable/button"/>
+
+        <Button
+            android:id="@+id/bt_img"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:text="@string/getimg"
+            android:layout_marginLeft="10dp"
+            android:background="@drawable/button"/>
+
+        <!--<Button-->
+        <!--android:id="@+id/bt_copy"-->
+        <!--android:layout_width="0dp"-->
+        <!--android:layout_weight="1"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:text="@string/cicleCoyeFile"-->
+        <!--android:layout_marginLeft="10dp"-->
+        <!--android:background="@drawable/button"/>-->
+
+        <!--<Button-->
+        <!--android:id="@+id/bt_excel"-->
+        <!--android:layout_width="0dp"-->
+        <!--android:layout_weight="1"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:text="导出Excel"-->
+        <!--android:layout_marginLeft="10dp"-->
+        <!--android:background="@drawable/button"/>-->
+        <!--<Button-->
+        <!--android:id="@+id/bt_import"-->
+        <!--android:layout_width="0dp"-->
+        <!--android:layout_weight="1"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:text="上传数据"-->
+        <!--android:layout_marginLeft="10dp"-->
+        <!--android:background="@drawable/button"/>-->
+    </LinearLayout>
+
+</LinearLayout>

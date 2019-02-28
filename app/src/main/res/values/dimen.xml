@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="adminTop">10dp</dimen>
+    <dimen name="scrolWidth">15dp</dimen>
+    <dimen name="buttonWidth">60dp</dimen>
+    <dimen name="buttonHeight">30dp</dimen>
+
+    <!-- title_item.xml  -->
+
+    <dimen name="buttonsSizeEN">15dp</dimen>
+
+    <dimen name="LinerHeight">50dp</dimen>
+
+
+    <dimen name="textSize">20sp</dimen>
+    <dimen name="titleBar">50sp</dimen>
+    <dimen name="viewHeight">10dp</dimen>
+    <dimen name="textSizetitle">25sp</dimen>
+    <dimen name="textViewNameSize">20sp</dimen>
+    <dimen name="buttonsSize">20dp</dimen>
+
+    <!-- title_item.xml  -->
+
+    <!--<dimen name="buttonsSizeEN">15dp</dimen>-->
+    <!--<dimen name="buttonHeight">40dp</dimen>-->
+    <!--<dimen name="buttonWidth">85dp</dimen>-->
+    <!--<dimen name="LinerHeight">50dp</dimen>-->
+
+    <dimen name="padding_small">9.1333dp</dimen>
+    <dimen name="padding_medium">9.1333dp</dimen>
+    <dimen name="padding_large">18.2667dp</dimen>
+    <dimen name="activity_horizontal_margin">18.2667dp</dimen>
+    <dimen name="activity_vertical_margin">18.2667dp</dimen>
+    <dimen name="height">11.4167dp</dimen>
+    <dimen name="fab_margin">18.2667dp</dimen>
+    <dimen name="title_bar_height">57.0833dp</dimen>
+    <dimen name="devImageWidth">79.9167dp</dimen>
+    <dimen name="nameSizeLive">17.1250sp</dimen>
+    <dimen name="marginLeftLength">5.7083dp</dimen>
+    <dimen name="marginRightLength">5.7083dp</dimen>
+    <dimen name="textviewSize">17sp</dimen>
+
+</resources>

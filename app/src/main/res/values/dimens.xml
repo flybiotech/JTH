@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--<dimen name="textSize">18sp</dimen>-->
+    <!--<dimen name="titleBar">50sp</dimen>-->
+    <!--<dimen name="viewHeight">10dp</dimen>-->
+    <!--<dimen name="textSizetitle">25sp</dimen>-->
+    <!--<dimen name="textViewNameSize">20sp</dimen>-->
+    <!--<dimen name="buttonsSize">20dp</dimen>-->
+
+    <!--&lt;!&ndash; title_item.xml  &ndash;&gt;-->
+
+    <!--<dimen name="buttonsSizeEN">15dp</dimen>-->
+    <!--<dimen name="buttonHeight">40dp</dimen>-->
+    <!--<dimen name="buttonWidth">85dp</dimen>-->
+    <!--<dimen name="LinerHeight">50dp</dimen>-->
+
+</resources>

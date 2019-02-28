@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+
+    >
+    <include android:id="@+id/ll_top" layout="@layout/title_item"></include>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:gravity="center">
+
+        <com.white.progressview.CircleProgressView
+            android:id="@+id/circle_progress_normal"
+            android:layout_width="260dp"
+            android:layout_height="260dp"
+            android:progress="0"
+            app:radius="100dp"
+            app:progressNormalColor="@color/weakRed"
+            app:progressReachColor="@color/lightRed"
+            app:progressTextSize="35dp"
+            app:progressNormalSize="20dp"
+            app:progressReachSize="20dp"
+            />
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/bt_commit"
+        android:background="@drawable/btn_bg"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/commitData"
+        android:layout_marginBottom="10dp"
+        android:layout_alignParentBottom="true"
+        android:layout_marginLeft="@dimen/nameSizeLive"
+        android:layout_marginRight="@dimen/nameSizeLive"
+        />
+</RelativeLayout>

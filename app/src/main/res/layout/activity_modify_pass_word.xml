@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="comvoice.example.zhangbin.startimage.activity.ModifyPassWordActivity">
+
+    <include layout="@layout/title_bar"></include>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="10dp"
+        android:orientation="vertical"
+        android:layout_marginTop="@dimen/titleBar">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:layout_marginTop="10dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:text="@string/user_name"
+                    android:textAllCaps="false"
+                    android:textSize="@dimen/textViewNameSize" />
+
+                <EditText
+                    android:id="@+id/edit_modifyName"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:background="@drawable/edit"
+                    android:gravity="center"
+                    android:hint="@string/user_name_hint"
+                    android:textAllCaps="false"
+                    />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:layout_marginTop="10dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:text="@string/user_password"
+                    android:textAllCaps="false"
+                    android:textSize="@dimen/textViewNameSize" />
+
+                <EditText
+                    android:id="@+id/edit_modifyPass"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:background="@drawable/edit"
+                    android:gravity="center"
+                    android:hint="@string/user_password_registration_hint"
+                    android:textAllCaps="false"
+                    android:digits="@string/filter_vcode"/>
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:layout_marginTop="10dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:gravity="center"
+                    android:maxLength="20"
+                    android:text="@string/user_password_again"
+                    android:textAllCaps="false"
+                    android:textSize="@dimen/textViewNameSize" />
+
+                <EditText
+                    android:id="@+id/edit_modifyPassCover"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:background="@drawable/edit"
+                    android:gravity="center"
+                    android:hint="@string/user_password_again_hint"
+                    android:maxLength="20"
+                    android:textAllCaps="false"
+                    android:digits="@string/filter_vcode"/>
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:layout_marginTop="10dp"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/btn_auth"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:gravity="center"
+                    android:maxLength="20"
+                    android:text="@string/authCodebtn"
+                    android:textAllCaps="false"
+                    android:textSize="@dimen/textViewNameSize" />
+
+                <EditText
+                    android:id="@+id/edit_auth"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:background="@drawable/edit"
+                    android:gravity="center"
+                    android:hint="@string/inputauthCode"
+                    android:maxLength="20"
+                    android:textAllCaps="false"
+                    />
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentTop="true">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_alignParentBottom="true"
+            android:background="#1e1d1d">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/weakRed1">
+
+                <Button
+                    android:id="@+id/btn_modifySave"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginLeft="15dp"
+                    android:background="@drawable/text_service_color1"
+                    android:text="@string/button_ok"
+                    android:textColor="#000"
+                    android:textSize="@dimen/buttonsSize"
+
+                    />
+
+                <Button
+                    android:id="@+id/btn_modifyCancel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:layout_alignParentLeft="true"
+                    android:layout_marginRight="15dp"
+                    android:background="@drawable/text_service_color1"
+                    android:text="@string/button_cancel"
+                    android:textColor="#000"
+                    android:textSize="@dimen/buttonsSize" />
+            </RelativeLayout>
+        </LinearLayout>
+    </RelativeLayout>
+
+
+
+</RelativeLayout>
