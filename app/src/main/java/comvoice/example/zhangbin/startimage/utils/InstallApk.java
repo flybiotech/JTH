@@ -130,31 +130,5 @@ public class InstallApk {
     }
 
     private static String TAG = "TAG_FragPrinter";
-//    //安装apk
-//    private  void installApk(Context context, String fileApk) {
-//        //    通过隐式意图调用系统安装程序安装APK
-//        Intent install = new Intent(Intent.ACTION_VIEW);
-//        // 由于没有在Activity环境下启动Activity,设置下面的标签
-//        install.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-////        Log.e(TAG, "downloadFileUri: "+downloadFileUri);
-//        if (fileApk != null) {
-//            File file = new File(fileApk);
-//            if (Build.VERSION.SDK_INT >= 24) {
-//                Uri apkUri = FileProvider.getUriForFile(context,context.getPackageName()+ ".fileprovider", file);
-//                Log.e(TAG, "android 7.0 : apkUri "+apkUri );
-//                //添加这一句表示对目标应用临时授权该Uri所代表的文件
-//                install.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-//                install.setDataAndType(apkUri, "application/vnd.android.package-archive");
-//                context.startActivity(install);
-//            } else {
-////                install.setDataAndType(downloadFileUri, "application/vnd.android.package-archive");
-//                //Uri.fromFile(file) : file:///storage/emulated/0/Download/update.apk
-//                Log.e(TAG, "Uri.fromFile(file) : "+Uri.fromFile(file) );
-//                install.setDataAndType(Uri.fromFile(file), "application/vnd.android.package-archive");
-//                context.startActivity(install);
-//            }
-//        } else {
-//            Toast.makeText(context, context.getString(R.string.installFaild), Toast.LENGTH_SHORT).show();
-//        }
-//    }
+
 }

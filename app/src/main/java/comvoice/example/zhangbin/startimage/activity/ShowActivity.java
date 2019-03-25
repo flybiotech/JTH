@@ -505,7 +505,7 @@ public class ShowActivity extends AppCompatActivity implements UpLoadService.UpL
             dismissDiolog();
             boolean isHave = installApk.isInstall();
             if(!isHave){
-                installApk(this,Const.FLY_SZB_apk);//打印服务插件本地路径);
+                installApk(this,Const.FLY_SZB_apk);//插件本地路径);
             }
         }
     }

@@ -30,6 +30,7 @@ public class SearchMessage {
         }
         return addmessageList;
     }
+
     /**
      * 根据输入的查询条件进行模糊查询
      */
@@ -41,13 +42,38 @@ public class SearchMessage {
         for(int i=0;i<listMessages.size();i++){
             if(listMessages.get(i).getPhone().contains(condition)){
                 ListMessage addmessage=new ListMessage();
-                addmessage.setName(listMessages.get(i).getName());
-                addmessage.setPhone(listMessages.get(i).getPhone());
+                addmessage.setName(initHideName(listMessages.get(i).getName()));
+                addmessage.setPhone(initHidePhone(listMessages.get(i).getPhone()));
                 addmessage.setScreenId(listMessages.get(i).getScreenId());
                 addmessageList.add(addmessage);
             }
         }
         return addmessageList;
+    }
+
+    /**
+     * 隐藏手机号中间4位
+     */
+    private String initHidePhone(String phone){
+        if(!phone.equals("")){
+            return phone.replaceAll("(\\d{3})\\d{4}(\\d{4})", "$1****$2");
+        }
+        return "";
+    }
+
+    /**
+     * 隐藏姓名
+     */
+    private String initHideName(String name){
+        if(!name.equals("")){
+            String surname=name.substring(0,1);
+            String hidename=name.substring(1,name.length());
+            for(int i=0;i<hidename.length();i++){
+                surname=surname+"*";
+            }
+            return surname;
+        }
+        return "";
     }
 
 }

@@ -41,7 +41,8 @@
         <activity
             android:name=".activity.LoginActivity"
             android:launchMode="singleTask"
-            android:screenOrientation="portrait">
+            android:screenOrientation="landscape"
+            >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -62,47 +63,60 @@
         <activity
             android:name=".activity.ScanningActivity"
             android:launchMode="singleTask"
-            android:screenOrientation="portrait"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar"
+            android:screenOrientation="landscape"
+            />
         <activity
             android:name=".activity.MainActivity"
             android:launchMode="singleTask"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="landscape"
+       />
         <activity
             android:name=".activity.RegisterActivity"
             android:launchMode="singleTask"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="landscape"
+       />
         <activity
             android:name=".activity.MessageDetailsActivity"
             android:launchMode="singleTask"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="landscape"
+     />
         <activity
             android:name=".activity.WifiSettingActivity"
             android:launchMode="singleTask"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="landscape"
+     />
         <activity
             android:name=".activity.ShowActivity"
             android:launchMode="singleTask"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="landscape"
+       />
         <activity
             android:name=".activity.CaseListManagerActivity"
             android:launchMode="singleTask"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="landscape"
+          />
         <activity
             android:name=".activity.FTPSettingActivity"
             android:launchMode="singleTask"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="landscape"
+
+         />
         <activity
             android:name=".activity.UploadActivity"
             android:launchMode="singleTask"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="landscape"
+          />
 
         <service
             android:name=".service.UpLoadService"
             android:enabled="true"
             android:exported="false" />
 
-        <activity android:name=".activity.ModifyPassWordActivity"></activity>
+        <activity android:name=".activity.ModifyPassWordActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="landscape"
+            ></activity>
     </application>
 
 </manifest>
