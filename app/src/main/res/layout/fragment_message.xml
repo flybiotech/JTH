@@ -14,7 +14,7 @@
        android:orientation="vertical"
        android:layout_alignParentLeft="true">
 
-      <include layout="@layout/title_item"></include>
+      <include layout="@layout/title_bar"></include>
 
       <ScrollView
           android:layout_width="match_parent"
@@ -56,7 +56,7 @@
                    android:layout_weight="4"
                    android:background="@drawable/edittext_select"
                    android:gravity="center"
-                   android:hint="@string/patient_select_name"
+                   android:hint="@string/input_screenid"
                    android:paddingBottom="2dp"
                    android:paddingTop="2dp"
                    android:textAllCaps="false"

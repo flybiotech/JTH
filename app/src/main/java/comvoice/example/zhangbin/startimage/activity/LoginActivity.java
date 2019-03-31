@@ -12,6 +12,7 @@ import android.text.InputType;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
+import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -35,6 +36,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import comvoice.example.zhangbin.startimage.R;
 import comvoice.example.zhangbin.startimage.model.UserBean;
+import comvoice.example.zhangbin.startimage.service.DeleteService;
 import comvoice.example.zhangbin.startimage.sp.SPUtils;
 import comvoice.example.zhangbin.startimage.utils.Const;
 import comvoice.example.zhangbin.startimage.utils.LitepalUtils;
@@ -104,6 +106,9 @@ public class LoginActivity extends AppCompatActivity implements WifiConnectManag
                     Intent intent = null;
                     intent = new Intent(LoginActivity.this, MainActivity.class);
                     startActivity(intent);
+
+                    intent = new Intent(LoginActivity.this, DeleteService.class);
+                    startService(intent);
                     finish();
                     break;
 
@@ -125,6 +130,8 @@ public class LoginActivity extends AppCompatActivity implements WifiConnectManag
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON, WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);//禁止屏幕休眠
+        this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_login);
         ButterKnife.bind(this);
         initView();

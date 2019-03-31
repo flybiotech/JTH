@@ -9,6 +9,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.view.KeyEvent;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -21,14 +22,15 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import comvoice.example.zhangbin.startimage.R;
+import comvoice.example.zhangbin.startimage.fragment.MessageFragment;
 import comvoice.example.zhangbin.startimage.fragment.RegisterFragment;
 import comvoice.example.zhangbin.startimage.fragment.SystemFragment;
 
 public class MainActivity extends AppCompatActivity {
     @BindView(R.id.textView_home_patientInfo)
     TextView textViewHomePatientInfo;
-//    @BindView(R.id.textView_home_casemanagerInfo)
-//    TextView textViewHomeCasemanagerInfo;
+    @BindView(R.id.textView_home_casemanagerInfo)
+    TextView textViewHomeCasemanagerInfo;
     @BindView(R.id.textView_home_settingInfo)
     TextView textViewHomeSettingInfo;
     @BindView(R.id.linear_home_layout)
@@ -36,18 +38,21 @@ public class MainActivity extends AppCompatActivity {
     @BindView(R.id.fl_container)
     FrameLayout flContainer;
     private long exitTiem = 0;
-    private List<Fragment>fragments;
+    private List<Fragment> fragments;
     private FragmentTransaction transaction;
     FragmentManager fragmentManager;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON, WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);//禁止屏幕休眠
+        this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
         initView();
-        Intent intent=getIntent();
-        int canshu=  intent.getIntExtra("canshu",0);//默认为登记页面
-        if(canshu==0){
+        Intent intent = getIntent();
+        int canshu = intent.getIntExtra("canshu", 0);//默认为登记页面
+        if (canshu == 0) {
             switchState(0);//跳到患者信息fragment
             transaction.replace(R.id.fl_container, fragments.get(0));
 //            viewPager.setCurrentItem(0);
@@ -65,16 +70,16 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void initView() {
-        fragments=new ArrayList<>();
-//        MessageFragment messageFragment=new MessageFragment();
-        RegisterFragment registerFragment=new RegisterFragment();
-        SystemFragment systemFragment=new SystemFragment();
+        fragments = new ArrayList<>();
+        MessageFragment messageFragment = new MessageFragment();
+        RegisterFragment registerFragment = new RegisterFragment();
+        SystemFragment systemFragment = new SystemFragment();
         fragments.add(registerFragment);
-//        fragments.add(messageFragment);
+        fragments.add(messageFragment);
         fragments.add(systemFragment);
-        fragmentManager=getSupportFragmentManager();
-        transaction=fragmentManager.beginTransaction();
-        transaction.replace(R.id.fl_container,fragments.get(0));
+        fragmentManager = getSupportFragmentManager();
+        transaction = fragmentManager.beginTransaction();
+        transaction.replace(R.id.fl_container, fragments.get(0));
         transaction.commit();
     }
 
@@ -93,7 +98,7 @@ public class MainActivity extends AppCompatActivity {
         return super.onKeyDown(keyCode, event);
     }
 
-    @OnClick({R.id.textView_home_patientInfo, R.id.textView_home_settingInfo})
+    @OnClick({R.id.textView_home_patientInfo, R.id.textView_home_settingInfo, R.id.textView_home_casemanagerInfo})
     public void onViewClicked(View view) {
         if (fragmentManager == null) {
             fragmentManager = getSupportFragmentManager();
@@ -104,18 +109,20 @@ public class MainActivity extends AppCompatActivity {
                 transaction.replace(R.id.fl_container, fragments.get(0));
                 switchState(0);
                 break;
-//            case R.id.textView_home_casemanagerInfo:
-//                switchState(1);
-//                transaction.replace(R.id.fl_container, fragments.get(1));
-//                break;
-            case R.id.textView_home_settingInfo:
+            case R.id.textView_home_casemanagerInfo:
                 switchState(1);
                 transaction.replace(R.id.fl_container, fragments.get(1));
+                break;
+            case R.id.textView_home_settingInfo:
+                switchState(2);
+                transaction.replace(R.id.fl_container, fragments.get(2));
                 break;
         }
         transaction.commit();
     }
-    private int mState=-1;
+
+    private int mState = -1;
+
     //判断选中了哪个Fragment
     private void switchState(int state) {
         if (mState == state) {
@@ -123,11 +130,11 @@ public class MainActivity extends AppCompatActivity {
         }
         mState = state;
         textViewHomePatientInfo.setTextColor(Color.BLACK);
-//        textViewHomeCasemanagerInfo.setTextColor(Color.BLACK);
+        textViewHomeCasemanagerInfo.setTextColor(Color.BLACK);
         textViewHomeSettingInfo.setTextColor(Color.BLACK);
 
         textViewHomePatientInfo.setSelected(false);
-//        textViewHomeCasemanagerInfo.setSelected(false);
+        textViewHomeCasemanagerInfo.setSelected(false);
         textViewHomeSettingInfo.setSelected(false);
 
 
@@ -136,11 +143,11 @@ public class MainActivity extends AppCompatActivity {
                 textViewHomePatientInfo.setTextColor(Color.RED);
                 textViewHomePatientInfo.setSelected(true);
                 break;
-//            case 1:
-//                textViewHomeCasemanagerInfo.setTextColor(Color.RED);
-//                textViewHomeCasemanagerInfo.setSelected(true);
-//                break;
             case 1:
+                textViewHomeCasemanagerInfo.setTextColor(Color.RED);
+                textViewHomeCasemanagerInfo.setSelected(true);
+                break;
+            case 2:
                 textViewHomeSettingInfo.setTextColor(Color.RED);
                 textViewHomeSettingInfo.setSelected(true);
                 break;

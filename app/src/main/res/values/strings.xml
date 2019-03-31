@@ -2,6 +2,7 @@
     <string name="app_name">佳婷慧</string>
     <string name="name">筛查姓名</string>
     <string name="screenId">筛查ID</string>
+    <string name="input_screenid">请输入筛查ID</string>
     <string name="phone">手机号码</string>
     <string name="age">年龄</string>
     <string name="ID">身份证号</string>
@@ -11,7 +12,9 @@
     <string name="mustInput">必填</string>
     <string name="titleMsg">图像上传工具</string>
     <string name="copy">文件复制</string>
+    <string name="coping">正在复制文件...</string>
     <string name="getimg">获取图像</string>
+    <string name="see_image">查看图像</string>
     <string name="requestPission">请赋予相应的权限</string>
     <string name="copySuccess">文件复制成功</string>
     <string name="file_no_exist">暂无文件</string>
@@ -186,9 +189,6 @@
     <string name="upLoadImage">上传图像</string>
 
 
-
-
-
     <string name="authCodebtn">验证码    :</string>
     <string name="inputauthCode">输入验证码</string>
     <string name="authModifyTitle">修改密码</string>
@@ -200,8 +200,6 @@
     <string name="authCodesendFailed">验证码发送失败 </string>
     <string name="authCodeTelnoExist">手机号码不存在 </string>
     <string name="authCodeTelnoEmpty">信息不能为空 </string>
-
-
 
 
 </resources>

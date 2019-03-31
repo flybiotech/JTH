@@ -25,7 +25,7 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
-    <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES"/>
+    <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" />
     <uses-permission
         android:name="android.permission.READ_LOGS"
         tools:ignore="ProtectedPermissions" />
@@ -38,11 +38,13 @@
         android:roundIcon="@mipmap/icon"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity android:name=".activity.ImageShowActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="landscape"></activity>
         <activity
             android:name=".activity.LoginActivity"
             android:launchMode="singleTask"
-            android:screenOrientation="landscape"
-            >
+            android:screenOrientation="landscape">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -63,60 +65,53 @@
         <activity
             android:name=".activity.ScanningActivity"
             android:launchMode="singleTask"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar"
             android:screenOrientation="landscape"
-            />
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity
             android:name=".activity.MainActivity"
             android:launchMode="singleTask"
-            android:screenOrientation="landscape"
-       />
+            android:screenOrientation="landscape" />
         <activity
             android:name=".activity.RegisterActivity"
             android:launchMode="singleTask"
-            android:screenOrientation="landscape"
-       />
+            android:screenOrientation="landscape" />
         <activity
             android:name=".activity.MessageDetailsActivity"
             android:launchMode="singleTask"
-            android:screenOrientation="landscape"
-     />
+            android:screenOrientation="landscape" />
         <activity
             android:name=".activity.WifiSettingActivity"
             android:launchMode="singleTask"
-            android:screenOrientation="landscape"
-     />
+            android:screenOrientation="landscape" />
         <activity
             android:name=".activity.ShowActivity"
             android:launchMode="singleTask"
-            android:screenOrientation="landscape"
-       />
+            android:screenOrientation="landscape" />
         <activity
             android:name=".activity.CaseListManagerActivity"
             android:launchMode="singleTask"
-            android:screenOrientation="landscape"
-          />
+            android:screenOrientation="landscape" />
         <activity
             android:name=".activity.FTPSettingActivity"
             android:launchMode="singleTask"
-            android:screenOrientation="landscape"
-
-         />
+            android:screenOrientation="landscape" />
         <activity
             android:name=".activity.UploadActivity"
             android:launchMode="singleTask"
-            android:screenOrientation="landscape"
-          />
+            android:screenOrientation="landscape" />
 
         <service
             android:name=".service.UpLoadService"
             android:enabled="true"
             android:exported="false" />
-
-        <activity android:name=".activity.ModifyPassWordActivity"
+        <service
+            android:name=".service.DeleteService"
+            android:enabled="true"
+            android:exported="false" />
+        <activity
+            android:name=".activity.ModifyPassWordActivity"
             android:launchMode="singleTask"
-            android:screenOrientation="landscape"
-            ></activity>
+            android:screenOrientation="landscape" />
     </application>
 
 </manifest>

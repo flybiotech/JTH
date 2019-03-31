@@ -3,8 +3,12 @@ package comvoice.example.zhangbin.startimage.sp;
 import android.content.Context;
 import android.content.SharedPreferences;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -18,7 +22,8 @@ public class SPUtils {
      * 保存在手机里面的文件名
      */
     public static final String FILE_NAME = "share_data";
-
+    public  static SharedPreferences.Editor editor;
+    public static SharedPreferences sp;
     /**
      * 保存数据的方法，我们需要拿到保存数据的具体类型，然后根据类型调用不同的保存方法
      *
@@ -29,9 +34,9 @@ public class SPUtils {
     public static void put(Context context, String key, Object object)
     {
 
-        SharedPreferences sp = context.getSharedPreferences(FILE_NAME,
+         sp = context.getSharedPreferences(FILE_NAME,
                 Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = sp.edit();
+         editor= sp.edit();
 
         if (object instanceof String)
         {
@@ -196,10 +201,38 @@ public class SPUtils {
         }
     }
 
+    /**
+     * 保存list
+     */
+    public static void setPathList(Context context,String screenid, List<String>pathlist){
+        if(null == pathlist || pathlist.size() == 0){
+            return;
+        }
+        Gson gson = new Gson();
+        sp = context.getSharedPreferences(FILE_NAME,
+                Context.MODE_PRIVATE);
+        //转换成json数据，再保存
+        editor = sp.edit();
+        String Json = gson.toJson(pathlist);
+        editor.putString(screenid,Json);
+        editor.commit();
+    }
 
+    //获取list
+    public static List<String> getPathList(Context context,String screenid){
+        List<String>stringList = null;
+        sp = context.getSharedPreferences(FILE_NAME,
+                Context.MODE_PRIVATE);
+        String json = sp.getString(screenid,null);
+        if(null == json){
+            return null;
+        }
+        Gson gson = new Gson();
+        stringList = gson.fromJson(json,new TypeToken<List<String>>() {
 
-
-
+        }.getType());
+        return stringList;
+    }
 
 
 

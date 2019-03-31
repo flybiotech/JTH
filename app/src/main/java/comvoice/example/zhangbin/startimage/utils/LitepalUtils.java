@@ -142,6 +142,7 @@ public class LitepalUtils {
         user.setPath(Const.fromPath+screenId);
         user.setHPV(hpv);
         user.setIdentification("0");
+        user.setData(getDate());
 //        user.setTCT(tct);
         try {
 //            user.setHospital(loginMsgs.get(0).getHospital());
@@ -166,13 +167,15 @@ public class LitepalUtils {
 
     }
     /**
-     * 得到保存患者时的时间
+     * 得到保存患者时的时间，毫秒
      */
     private String getDate(){
-        SimpleDateFormat formatter = null; //转化时间
-        formatter   =   new   SimpleDateFormat   ("yyyy年MM月dd日   HH:mm:ss", Locale.getDefault());//系统当前时间
-        Date curDate =  new Date();
-        String date=formatter.format(curDate);
-        return date;
+//        SimpleDateFormat formatter = null; //转化时间
+//        formatter   =   new   SimpleDateFormat   ("yyyy年MM月dd日   HH:mm:ss", Locale.getDefault());//系统当前时间
+//        Date curDate =  new Date();
+//        String date=formatter.format(curDate);
+        long time = System.currentTimeMillis();
+        String data = String.valueOf(time);
+        return data;
     }
 }

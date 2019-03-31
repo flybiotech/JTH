@@ -14,6 +14,7 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -167,6 +168,8 @@ public class ShowActivity extends AppCompatActivity implements UpLoadService.UpL
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON, WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);//禁止屏幕休眠
+        this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_show);
         unbinder = ButterKnife.bind(this);
         msg = getIntent().getStringExtra("msg");
@@ -646,6 +649,11 @@ public class ShowActivity extends AppCompatActivity implements UpLoadService.UpL
 
     @Override
     public void fileDelFailed() {
+
+    }
+
+    @Override
+    public void fileStartCopy() {
 
     }
 

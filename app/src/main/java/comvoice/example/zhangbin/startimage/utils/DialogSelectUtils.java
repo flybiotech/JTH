@@ -16,6 +16,8 @@ import android.widget.ListView;
 
 import java.util.List;
 
+import comvoice.example.zhangbin.startimage.activity.ImageShowActivity;
+import comvoice.example.zhangbin.startimage.manager.SelectionManager;
 import comvoice.example.zhangbin.startimage.sp.SPUtils;
 import comvoice.example.zhangbin.startimage.wifiinfo.WifiConnectManager;
 
@@ -72,8 +74,16 @@ public class DialogSelectUtils {
                         if (mListenner != null) {
                             WifiConnectManager.getInstance().connectWifi(SZB_WIFI_SSID, SZB_WIFIF_PASS, Const.WIFI_TYPE_SZB, mListenner);
                         }
+
                         break;
+
                     case 1:
+                        if(dialogSelect != null){
+                            dialogSelect.getIndex(1);
+                        }
+                        break;
+                    case 2:
+
                         String LAN_WIFI_SSID = (String) SPUtils.get(mContext, Const.LAN_WIFI_SSID_KEY, "");
                         String LAN_WIFI_PASS = (String) SPUtils.get(mContext, Const.LAN_WIFI_PASS_KEY, "");
                         Log.e("TAG_1", "onItemClick: mListenner = "+mListenner );
@@ -101,9 +111,15 @@ public class DialogSelectUtils {
     }
 
 
+    public interface DialogSelect{
+        void getIndex(int type);
+    }
 
+    static DialogSelect dialogSelect;
 
-
+    public static void setDialogSelectListener(DialogSelect dialogSelectListener){
+        dialogSelect = dialogSelectListener;
+    }
 
 
 

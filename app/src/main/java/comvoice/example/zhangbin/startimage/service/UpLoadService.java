@@ -162,7 +162,15 @@ public class UpLoadService extends Service {
             for (int currentFile = 0;currentFile < allFile.length;currentFile++) {
                 if (!allFile[currentFile].isDirectory()) {
                     String srcName = allFile[currentFile].getPath().toString();
-                    uploadFile(new File(srcName), remoteDirectoryPath);
+
+                    if(Const.stringList != null && Const.stringList.size() > 0){
+                        for(int i = 0;i< Const.stringList.size();i++){
+                            if(srcName.equals(Const.stringList.get(i))){
+                                uploadFile(new File(srcName), remoteDirectoryPath);
+                            }
+                        }
+                    }
+
                 }
             }
             for (int currentFile = 0;currentFile < allFile.length;currentFile++) {
@@ -202,11 +210,11 @@ public class UpLoadService extends Service {
                 if (upLoadFileProcess != null) {
                     upLoadFileProcess.getUpLoadFileProcessPrecent(percent);
                 }
-                initDelete(localFile.getAbsolutePath());
-
-                if(percent>=100){
-                    fileUtils.deleteFile(new File(Const.fromPath+Const.SPscreenId));
-                }
+//                initDelete(localFile.getAbsolutePath());
+//
+//                if(percent>=100){
+//                    fileUtils.deleteFile(new File(Const.fromPath+Const.SPscreenId));
+//                }
                 return success;
             }else {//文件上传失败后，再次进行上传，最多上传4次
                 if(num<=3){
@@ -364,7 +372,7 @@ public class UpLoadService extends Service {
     public void upLoadDir(String localDir,String remoteDir){
         File file=new File(localDir);
         if(file.exists()){
-            LocalAllSize=getSize(file.listFiles());
+            LocalAllSize=getFileSize(Const.stringList);
         }
 
 //        Log.e("localsize",LocalAllSize+"");
@@ -375,6 +383,19 @@ public class UpLoadService extends Service {
 //            e.printStackTrace();
 //        }
     }
+
+
+    //根据路径得到本地文件的大小
+
+    private long getFileSize(List<String> filepaths){
+        for(int i =0;i<filepaths.size();i++){
+            File file = new File(filepaths.get(i));
+            LocalAllSize += file.length();
+        }
+        return LocalAllSize;
+    }
+
+
     /**
      * 本地文件大小
      */

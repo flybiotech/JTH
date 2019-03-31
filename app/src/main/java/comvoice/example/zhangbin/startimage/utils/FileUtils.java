@@ -163,11 +163,14 @@ public class FileUtils {
      */
     boolean isCopyComplete = false;
     public void startCopyFileAndDel() {
+
         isCopy = isCopy(new File(Const.originalPath));
         String screeningId = initGetSP();
 
         if (screeningId != null) {
             if (isCopy) {//默认路径存在文件
+                mListener.fileStartCopy();
+
                 new Thread(new Runnable() {
                     @Override
                     public void run() {
@@ -208,7 +211,7 @@ public class FileUtils {
     /**
      * 获取保存的本地信息
      */
-    private String initGetSP() {
+    public String initGetSP() {
         return (String) SPUtils.get(mContext, Const.SCREENID_KEY, "");
     }
 
@@ -358,6 +361,8 @@ public class FileUtils {
         void fileDelSuccess();
 
         void fileDelFailed();
+
+        void fileStartCopy();
 
     }
 

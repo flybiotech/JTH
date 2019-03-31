@@ -7,9 +7,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -21,15 +21,15 @@ import comvoice.example.zhangbin.startimage.utils.MessageSelectUtils;
 
 public class MessageFragment extends Fragment {
 
-
-    @BindView(R.id.title_text)
-    TextView titleText;
-    @BindView(R.id.btn_left)
-    Button btnLeft;
-    @BindView(R.id.btn_right)
-    Button btnRight;
-    @BindView(R.id.rl)
-    RelativeLayout rl;
+    //
+//    @BindView(R.id.title_text)
+//    TextView titleText;
+//    @BindView(R.id.btn_left)
+//    Button btnLeft;
+//    @BindView(R.id.btn_right)
+//    Button btnRight;
+//    @BindView(R.id.rl)
+//    RelativeLayout rl;
     @BindView(R.id.tv_casesearch_01)
     TextView tvCasesearch01;
     @BindView(R.id.edit_casesearch_screenid)
@@ -42,13 +42,17 @@ public class MessageFragment extends Fragment {
     TextView tvCasesearch03;
     @BindView(R.id.edit_casesearch_tel)
     EditText editCasesearchTel;
-//    @BindView(R.id.tv_casesearch_04)
-//    TextView tvCasesearch04;
-//    @BindView(R.id.edit_casesearch_02)
-//    EditText editCasesearch02;
     @BindView(R.id.btn_casesearch_search)
     Button btnCasesearchSearch;
     Unbinder unbinder;
+    @BindView(R.id.btn_left)
+    Button btnLeft;
+    @BindView(R.id.tv_title)
+    TextView tvTitle;
+    @BindView(R.id.iv_screen)
+    ImageView ivScreen;
+    @BindView(R.id.rl)
+    RelativeLayout rl;
     private MessageSelectUtils messageSelectUtils;
     private String[] nameTv;
 
@@ -68,8 +72,10 @@ public class MessageFragment extends Fragment {
             tvID[i].setText(AlignedTextUtils.justifyString(nameTv[i], 4));
         }
         btnLeft.setVisibility(View.GONE);
-        btnRight.setVisibility(View.GONE);
-        messageSelectUtils=new MessageSelectUtils(getContext(),editCasesearchScreenid,editCasesearchName,editCasesearchTel);
+//        btnRight.setVisibility(View.GONE);
+        messageSelectUtils = new MessageSelectUtils(getContext(), editCasesearchScreenid, editCasesearchName, editCasesearchTel);
+        tvTitle.setText(R.string.case_title);
+        ivScreen.setVisibility(View.GONE);
     }
 
     @Override
@@ -93,7 +99,8 @@ public class MessageFragment extends Fragment {
                     }
                 }).start();
                 break;
-                default:break;
+            default:
+                break;
         }
     }
 }

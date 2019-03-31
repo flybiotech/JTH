@@ -40,7 +40,6 @@ public class NetWorkUtils {
             super.handleMessage(msg);
             stopThread();
             if(msg.what==0){
-
                 Intent intent=new Intent(context, UpLoadService.class);
                 context.startService(intent);
             }else if(msg.what==-1){

@@ -65,6 +65,8 @@ public class Const {
     public static String FLY_SZB_apk = Environment.getExternalStorageDirectory() + "/FLY_SZB_V1.1.apk";
 
 
+    public static List<String>stringList;//选择的图片的集合
+
 
 
 

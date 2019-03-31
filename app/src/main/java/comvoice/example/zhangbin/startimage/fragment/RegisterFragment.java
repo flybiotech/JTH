@@ -24,6 +24,8 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.lcw.library.imagepicker.ImagePicker;
+
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
@@ -33,15 +35,18 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
 import comvoice.example.zhangbin.startimage.R;
+import comvoice.example.zhangbin.startimage.activity.ImageShowActivity;
 import comvoice.example.zhangbin.startimage.activity.ScanningActivity;
 import comvoice.example.zhangbin.startimage.activity.ShowActivity;
 import comvoice.example.zhangbin.startimage.adapter.MessageAdapter;
 import comvoice.example.zhangbin.startimage.model.ListMessage;
 import comvoice.example.zhangbin.startimage.service.UpLoadService;
 import comvoice.example.zhangbin.startimage.sp.SPUtils;
+import comvoice.example.zhangbin.startimage.utils.CaseListUtils;
 import comvoice.example.zhangbin.startimage.utils.Const;
 import comvoice.example.zhangbin.startimage.utils.DialogSelectUtils;
 import comvoice.example.zhangbin.startimage.utils.FileUtils;
+import comvoice.example.zhangbin.startimage.utils.GlideLoader;
 import comvoice.example.zhangbin.startimage.utils.InstallApk;
 import comvoice.example.zhangbin.startimage.utils.LoadingDialog;
 import comvoice.example.zhangbin.startimage.utils.NetWorkUtils;
@@ -56,7 +61,7 @@ import static android.app.Activity.RESULT_OK;
  * RegisterFragment.java
  */
 public class RegisterFragment extends Fragment implements AdapterView.OnItemClickListener, UpLoadService.UpLoadFileProcess,
-        WifiConnectManager.WifiConnectListener, FileUtils.FileCopyAndDelListener {
+        WifiConnectManager.WifiConnectListener, FileUtils.FileCopyAndDelListener, DialogSelectUtils.DialogSelect {
     @BindView(R.id.edittext)
     EditText edittext;
     @BindView(R.id.imageview)
@@ -81,6 +86,9 @@ public class RegisterFragment extends Fragment implements AdapterView.OnItemClic
     private Thread thread = null;
     private LoadingDialog mDialog;
     private InstallApk installApk;
+    private CaseListUtils caseListUtils;
+    private List<String>stringList;
+    private String TAG_RE = "registerFragment_";
     private Handler handler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
@@ -95,6 +103,7 @@ public class RegisterFragment extends Fragment implements AdapterView.OnItemClic
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
         View view = inflater.inflate(R.layout.fragment_register, container, false);
         unbinder = ButterKnife.bind(this, view);
         initView(view);
@@ -144,10 +153,13 @@ public class RegisterFragment extends Fragment implements AdapterView.OnItemClic
         mDialog = new LoadingDialog(getContext());
         show_list = new ArrayList<>();
         show_list.add(getString(R.string.fragment_getImage));
+        show_list.add(getString(R.string.see_image));
         show_list.add(getString(R.string.fragment_updataImage));
 //        UpLoadService.setUpLoadFileProcessListener(this);
         installApk = new InstallApk(getActivity());
         netWorkUtils = new NetWorkUtils(getActivity());
+        caseListUtils = new CaseListUtils(getContext());
+        DialogSelectUtils.setDialogSelectListener(this);
     }
 
     private void initData() {
@@ -365,8 +377,21 @@ public class RegisterFragment extends Fragment implements AdapterView.OnItemClic
             //上传
 
             if (fileUtils.isCopy(new File(Const.fromPath + Const.SPscreenId + "/"))) {
-//                SouthUtil.showToast(getActivity(), "dddddddddddddddddddd");
-                netWorkUtils.getUrl();
+                stringList = SPUtils.getPathList(getContext(),Const.SPscreenId);
+                //先判断是否选择有图片，如果有直接上传，如果没有，则查询本地全部图片上传
+                if(null != stringList && stringList.size() > 0){
+                    Const.stringList = stringList;
+                }else {
+                    Const.stringList = caseListUtils.ImageShow();
+                }
+
+                if(null != Const.stringList && Const.stringList.size() > 0){
+                    Log.e(TAG_RE,Const.stringList.size()+",,"+Const.stringList.get(0));
+                    netWorkUtils.getUrl();
+                }else {
+                    Log.e(TAG_RE, getActivity().getString(R.string.file_no_exist));
+                }
+
             } else {
                 dismissDiolog();
                 SouthUtil.showToast(getActivity(), getActivity().getString(R.string.file_no_exist));
@@ -430,6 +455,7 @@ public class RegisterFragment extends Fragment implements AdapterView.OnItemClic
 
     @Override
     public void fileCopySuccess() {
+        dismissDiolog();
 
     }
 
@@ -451,11 +477,31 @@ public class RegisterFragment extends Fragment implements AdapterView.OnItemClic
     }
 
     @Override
+    public void fileStartCopy() {
+        showDiolog(getString(R.string.fileCopying));
+    }
+
+    @Override
     public void onStop() {
         super.onStop();
         Log.e("TAG_1", "onStop: FRAGMENT " );
         WifiConnectManager.getInstance().stopThreadConnectWifi();
     }
+    private static final int REQUEST_SELECT_IMAGES_CODE = 0x01;
+    private ArrayList<String> mImagePaths;
 
-
+    @Override
+    public void getIndex(int type) {
+        switch (type){
+            case 0:
+                break;
+            case 1:
+                Intent intent = new Intent(getActivity(), ImageShowActivity.class);
+                getActivity().startActivity(intent);
+                break;
+            case 2:
+                break;
+                default:break;
+        }
+    }
 }
