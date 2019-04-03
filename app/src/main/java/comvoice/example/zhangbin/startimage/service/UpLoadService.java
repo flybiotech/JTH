@@ -22,6 +22,7 @@ import java.util.List;
 import java.util.TimeZone;
 
 import comvoice.example.zhangbin.startimage.model.User;
+import comvoice.example.zhangbin.startimage.sp.SPUtils;
 import comvoice.example.zhangbin.startimage.utils.Const;
 import comvoice.example.zhangbin.startimage.utils.FileUtils;
 
@@ -51,8 +52,7 @@ public class UpLoadService extends Service {
         @Override
         protected String doInBackground(String... strings) {
 
-                String path = "";
-                path= Const.fromPath+Const.SPscreenId;
+                String path= Const.fromPath+Const.SPscreenId;
                 File file=new File(path);//某次筛查的全部文件，即根目录，如100
                 if (file.exists()) {
                         boolean isLoginSuccess = ftpLogin();
@@ -81,7 +81,7 @@ public class UpLoadService extends Service {
                                 isUpSuccess=initFiles(path);
                             }
                             if (isUpSuccess) {
-                                ftpLogOut();
+                                ftpLogOut(1);
                                 FTPAllSize=0;
                                 LocalAllSize=0;
                                 stopSelf();
@@ -148,7 +148,7 @@ public class UpLoadService extends Service {
         try {
             remoteDirectoryPath=remoteDirectoryPath+src.getName()+"/";
             initCreateFtpFile(remoteDirectoryPath);
-            initCreate(localDirectory);
+//            initCreate(localDirectory);
         }catch (Exception e) {
 //            e.printStackTrace();
             Log.e("is",e.getMessage().toString());
@@ -162,7 +162,6 @@ public class UpLoadService extends Service {
             for (int currentFile = 0;currentFile < allFile.length;currentFile++) {
                 if (!allFile[currentFile].isDirectory()) {
                     String srcName = allFile[currentFile].getPath().toString();
-
                     if(Const.stringList != null && Const.stringList.size() > 0){
                         for(int i = 0;i< Const.stringList.size();i++){
                             if(srcName.equals(Const.stringList.get(i))){
@@ -178,12 +177,12 @@ public class UpLoadService extends Service {
                     // 递归
                     uploadDirectory(allFile[currentFile].getPath().toString(),
                             remoteDirectoryPath);
-                    initCopy(allFile[currentFile].getPath().toString());
+//                    initCopy(allFile[currentFile].getPath().toString());
                 }
             }
             return makeDirFlag;
         }else {
-            ftpLogOut();
+            ftpLogOut(1);
             return makeDirFlag;
         }
     }
@@ -199,6 +198,8 @@ public class UpLoadService extends Service {
         try {
             this.ftpClient.changeWorkingDirectory(romotUpLoadePath);// 改变工作路径
             inStream = new BufferedInputStream(new FileInputStream(localFile));
+
+            ftpClient.setSoTimeout(5000);
             Log.e("logging",localFile.getName() + "开始上传.....");
             success = this.ftpClient.storeFile(localFile.getName(), inStream);
             //文件上传成功
@@ -212,9 +213,11 @@ public class UpLoadService extends Service {
                 }
 //                initDelete(localFile.getAbsolutePath());
 //
-//                if(percent>=100){
+                if(percent>=100){
 //                    fileUtils.deleteFile(new File(Const.fromPath+Const.SPscreenId));
-//                }
+                    ftpLogOut(2);
+
+                }
                 return success;
             }else {//文件上传失败后，再次进行上传，最多上传4次
                 if(num<=3){
@@ -227,6 +230,9 @@ public class UpLoadService extends Service {
         }catch (FileNotFoundException e) {
             e.printStackTrace();
         }catch (IOException e) {
+            //先断开连接
+            ftpLogOut(2);
+            ftpLogin();
             e.printStackTrace();
         }finally {
             if (inStream != null) {
@@ -314,20 +320,35 @@ public class UpLoadService extends Service {
     /**
      * @退出关闭服务器链接
      * */
-    public void ftpLogOut() {
+    public void ftpLogOut(int type) {
         if (null != this.ftpClient && this.ftpClient.isConnected()) {
             try {
                 boolean reuslt = this.ftpClient.logout();// 退出FTP服务器
                 if (reuslt) {
                     Log.e("success","成功退出服务器");
+                    if(type == 1){
+                        if(upLoadFileProcess != null){
+                            upLoadFileProcess.loginOut(true);
+                        }
+                    }
                 }
             }catch (IOException e) {
+                if(type == 1){
+                    if(upLoadFileProcess != null){
+                        upLoadFileProcess.loginOut(false);
+                    }
+                }
                 e.printStackTrace();
                 Log.e("success","退出FTP服务器异常！" + e.getMessage());
             }finally {
                 try {
                     this.ftpClient.disconnect();// 关闭FTP服务器的连接
                 }catch (IOException e) {
+                    if(type == 1){
+                        if(upLoadFileProcess != null){
+                            upLoadFileProcess.loginOut(false);
+                        }
+                    }
                     e.printStackTrace();
                     Log.e("success","关闭FTP服务器的连接异常！");
                 }
@@ -374,20 +395,15 @@ public class UpLoadService extends Service {
         if(file.exists()){
             LocalAllSize=getFileSize(Const.stringList);
         }
-
-//        Log.e("localsize",LocalAllSize+"");
-//        try {
-//            this.ftpClient.makeDirectory(remoteDir +file.getName()+"-HPV/");
-//            this.ftpClient.makeDirectory(remoteDir +file.getName()+"-TCT/");
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
     }
 
 
     //根据路径得到本地文件的大小
 
     private long getFileSize(List<String> filepaths){
+        if(null == filepaths){
+           return 0;
+        }
         for(int i =0;i<filepaths.size();i++){
             File file = new File(filepaths.get(i));
             LocalAllSize += file.length();
@@ -416,6 +432,7 @@ public class UpLoadService extends Service {
         void getUpLoadFileProcessPrecent(double percent);
         void getUpLoadSuccess();
         void getUpLoadFaild();
+        void loginOut(boolean outResult);
     }
 
     static UpLoadFileProcess upLoadFileProcess;

@@ -24,8 +24,6 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.lcw.library.imagepicker.ImagePicker;
-
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
@@ -52,6 +50,7 @@ import comvoice.example.zhangbin.startimage.utils.LoadingDialog;
 import comvoice.example.zhangbin.startimage.utils.NetWorkUtils;
 import comvoice.example.zhangbin.startimage.utils.SearchMessage;
 import comvoice.example.zhangbin.startimage.utils.SouthUtil;
+import comvoice.example.zhangbin.startimage.utils.ToastUtils;
 import comvoice.example.zhangbin.startimage.wifiinfo.WifiConnectManager;
 
 import static android.app.Activity.RESULT_OK;
@@ -120,15 +119,25 @@ public class RegisterFragment extends Fragment implements AdapterView.OnItemClic
     @Override
     public void onStart() {
         super.onStart();
+        Log.e(TAG_RE+"start","start");
+        UpLoadService.setUpLoadFileProcessListener(this);
+        DialogSelectUtils.setDialogSelectListener(this);
+        fileUtils.startCopyFileAndDel();
+        String sc = (String) SPUtils.get(getContext(),Const.SCREENID_KEY,"");
+        Log.e(TAG_RE+"SP",sc+"sp");
+        if(!"".equals(sc)){
+            Const.SPscreenId = sc;
+            dialogSelectUtils.showDialog();
+        }
 
     }
 
     @Override
     public void onResume() {
         super.onResume();
+        Log.e(TAG_RE+"resume","resume");
         initGetData();
-        fileUtils.startCopyFileAndDel();
-        UpLoadService.setUpLoadFileProcessListener(this);
+
     }
 
     private void initGetData() {
@@ -138,6 +147,7 @@ public class RegisterFragment extends Fragment implements AdapterView.OnItemClic
             public void run() {
                 Message message = handler.obtainMessage();
                 userList = fileUtils.getList();
+                Log.e(TAG_RE+"resume","userlist  :  "+userList.size());
                 message.what = 1;
                 handler.sendMessage(message);
             }
@@ -151,15 +161,11 @@ public class RegisterFragment extends Fragment implements AdapterView.OnItemClic
         searchMessage = new SearchMessage();
         fileUtils = new FileUtils(getContext(), this);
         mDialog = new LoadingDialog(getContext());
-        show_list = new ArrayList<>();
-        show_list.add(getString(R.string.fragment_getImage));
-        show_list.add(getString(R.string.see_image));
-        show_list.add(getString(R.string.fragment_updataImage));
-//        UpLoadService.setUpLoadFileProcessListener(this);
         installApk = new InstallApk(getActivity());
         netWorkUtils = new NetWorkUtils(getActivity());
         caseListUtils = new CaseListUtils(getContext());
-        DialogSelectUtils.setDialogSelectListener(this);
+//        DialogSelectUtils.setDialogSelectListener(this);
+
     }
 
     private void initData() {
@@ -248,7 +254,7 @@ public class RegisterFragment extends Fragment implements AdapterView.OnItemClic
     @Override
     public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
 //        if(!fileUtils.isCopy(new File(Const.originalPath))){
-        dialogSelectUtils.showDialog(show_list, userList.get(i).getScreenId());
+        dialogSelectUtils.showDialog();
 //        }
     }
 
@@ -263,7 +269,8 @@ public class RegisterFragment extends Fragment implements AdapterView.OnItemClic
                 if (!fileUtils.isCopy(new File(Const.originalPath))) {
                     startActivityForResult(new Intent(getContext(), ScanningActivity.class), 1);
                 } else {
-                    SouthUtil.showToast(getActivity(), getString(R.string.copyFile));
+                    fileUtils.startCopyFileAndDel();
+//                    SouthUtil.showToast(getActivity(), getString(R.string.copyFile));
                 }
                 break;
             default:
@@ -311,19 +318,11 @@ public class RegisterFragment extends Fragment implements AdapterView.OnItemClic
                 context.startActivity(install);
             }
         } else {
-//            SouthUtil.showToast(this, this.getString(R.string.print_download_faild));
         }
     }
     //开始上传
     @Override
     public void getUpLoadStart() {
-//        showDiolog("已上传:" +  "0%");
-//        getActivity().runOnUiThread(new Runnable() {
-//            @Override
-//            public void run() {
-//                showDiolog(getString(R.string.fragment_startUpdate));
-//            }
-//        });
 
     }
 
@@ -333,13 +332,15 @@ public class RegisterFragment extends Fragment implements AdapterView.OnItemClic
         getActivity().runOnUiThread(new Runnable() {
             @Override
             public void run() {
+                showDiolog("已上传:" + (int) percent + " %");
                 if (percent >= 100.0) {
-                    showDiolog("已上传:" + (int) percent + " %");
                     dismissDiolog();
+                    //清除本地保留的Screenid
+                    SPUtils.remove(getContext(),Const.SCREENID_KEY);
                     initGetData();
-                } else {
-                    showDiolog("已上传:" + (int) percent + " %");
 
+                    ToastUtils.showToast(getContext(), getString(R.string.import_Success));
+                    Log.e(TAG_RE+"getPercent",percent+"，，");
                 }
             }
         });
@@ -348,7 +349,7 @@ public class RegisterFragment extends Fragment implements AdapterView.OnItemClic
     //上传成功
     @Override
     public void getUpLoadSuccess() {
-
+//        onResume();
     }
 
     //上传失败
@@ -356,6 +357,14 @@ public class RegisterFragment extends Fragment implements AdapterView.OnItemClic
     public void getUpLoadFaild() {
         dismissDiolog();
         SouthUtil.showToast(getActivity(), getString(R.string.upLoadFaild));
+    }
+
+    @Override
+    public void loginOut(boolean outResult) {
+//        if(percentResult != 100){
+//            ToastUtils.showToast(AdminSetActivity.this,getString(R.string.setting_error));
+//            importData.updateFile();
+//        }
     }
 
 
@@ -456,12 +465,12 @@ public class RegisterFragment extends Fragment implements AdapterView.OnItemClic
     @Override
     public void fileCopySuccess() {
         dismissDiolog();
-
     }
 
     @Override
     public void fileCopyFailed(String msg) {
         dismissDiolog();
+        Log.e(TAG_RE+"filecopyfaild","文件复制失败");
 //        SouthUtil.showToast(getActivity(), msg);
 
     }
@@ -492,14 +501,30 @@ public class RegisterFragment extends Fragment implements AdapterView.OnItemClic
 
     @Override
     public void getIndex(int type) {
+        dialogSelectUtils.dismissDialog();
         switch (type){
             case 0:
+//                dialogSelectUtils.dismissDialog();
+                String SZB_WIFI_SSID = (String) SPUtils.get(getContext(), Const.SZB_WIFI_SSID_KEY, "");
+                String SZB_WIFIF_PASS = (String) SPUtils.get(getContext(), Const.SZB_WIFI_PASS_KEY, "");
+                Log.e("TAG_1", "onItemClick: mListenner = "+this );
+//                if (mListenner != null) {
+                    WifiConnectManager.getInstance().connectWifi(SZB_WIFI_SSID, SZB_WIFIF_PASS, Const.WIFI_TYPE_SZB, this);
+//                }
                 break;
             case 1:
                 Intent intent = new Intent(getActivity(), ImageShowActivity.class);
                 getActivity().startActivity(intent);
                 break;
             case 2:
+
+                String LAN_WIFI_SSID = (String) SPUtils.get(getContext(), Const.LAN_WIFI_SSID_KEY, "");
+                String LAN_WIFI_PASS = (String) SPUtils.get(getContext(), Const.LAN_WIFI_PASS_KEY, "");
+//                Log.e("TAG_1", "onItemClick: mListenner = "+mListenner );
+//                if (mListenner != null) {
+                    WifiConnectManager.getInstance().connectWifi(LAN_WIFI_SSID, LAN_WIFI_PASS, Const.WIFI_TYPE_LAN, this);
+//                }
+
                 break;
                 default:break;
         }

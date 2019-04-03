@@ -44,6 +44,7 @@ public class Const {
     public static String SCREENID_KEY="SCREENID";  // 获取保存的本地信息 用做复制的目标路径
     public static String AUTHCODE_KEY="authcode";  // 保存验证码
     public static String DoctorPhone="";//保存登陆的医生电话
+    public static String DELETE_KEY = "DELETE_DATA";
 
 
     public static final String page="com.fang.li";

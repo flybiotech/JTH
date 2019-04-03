@@ -14,12 +14,16 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+import java.util.TimerTask;
 
 import comvoice.example.zhangbin.startimage.model.User;
 import comvoice.example.zhangbin.startimage.utils.Const;
+import comvoice.example.zhangbin.startimage.utils.FileUtils;
 
 public class DeleteService extends Service {
     private List<User>userList;
+
+    private String TAG_ = "deleteservice_";
     @Nullable
     @Override
     public IBinder onBind(Intent intent) {
@@ -51,9 +55,15 @@ public class DeleteService extends Service {
                 if(null != userList.get(i).getData()){
                     long redata = Long.parseLong(userList.get(i).getData());
 //                    long redata = 1;
-                    Log.e("DELETESERVICE",nowdata+",,,"+redata);
-                    if(nowdata - redata > 100){
-                        userList.get(i).delete();
+                    Log.e(TAG_,nowdata+",,,"+redata);
+                    if(nowdata - redata > 1209600000){
+//                        userList.get(i).delete();
+                        File file = new File(Const.fromPath+userList.get(i).getScreenId()+"/");
+                        boolean delete = false;
+                        if(file.exists()){
+                            delete = FileUtils.deleteFile(file);
+                        }
+                        Log.e(TAG_+"1",nowdata+",,,"+redata);
                     }
                 }
 

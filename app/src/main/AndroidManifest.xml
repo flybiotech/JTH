@@ -38,9 +38,13 @@
         android:roundIcon="@mipmap/icon"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".activity.ImageShowActivity"
-            android:launchMode="singleTask"
+        <activity android:name=".activity.DeleteSettingActivity"></activity>
+        <activity android:name=".activity.PreviewActivity" android:launchMode="singleTask"
             android:screenOrientation="landscape"></activity>
+        <activity
+            android:name=".activity.ImageShowActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="landscape" />
         <activity
             android:name=".activity.LoginActivity"
             android:launchMode="singleTask"
@@ -108,6 +112,7 @@
             android:name=".service.DeleteService"
             android:enabled="true"
             android:exported="false" />
+
         <activity
             android:name=".activity.ModifyPassWordActivity"
             android:launchMode="singleTask"

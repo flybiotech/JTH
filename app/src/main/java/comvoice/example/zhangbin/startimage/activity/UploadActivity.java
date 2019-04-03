@@ -148,6 +148,11 @@ public class UploadActivity extends AppCompatActivity implements UpLoadService.U
     }
 
     @Override
+    public void loginOut(boolean outResult) {
+
+    }
+
+    @Override
     public void startWifiConnecting(String type) {
         showDiolog(getString(R.string.wifiProcessMsg));
     }

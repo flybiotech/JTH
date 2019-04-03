@@ -131,7 +131,7 @@ public class ImageShowActivity extends AppCompatActivity {
 
     private void getDate(){
         urls = caseListUtils.ImageShow();
-       if(urls == null){
+       if(urls == null || urls.size() == 0){
            return;
        }
         SelectionManager.getInstance().setMaxCount(urls.size());

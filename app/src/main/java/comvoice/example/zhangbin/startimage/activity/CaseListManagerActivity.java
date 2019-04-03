@@ -58,6 +58,7 @@ public class CaseListManagerActivity extends AppCompatActivity {
     private void initView() {
         titleText.setText(getString(R.string.msg_list));
         btnRight.setVisibility(View.GONE);
+        btnLeft.setVisibility(View.VISIBLE);
     }
 
     private void initClickItem() {

@@ -107,8 +107,13 @@ public class LoginActivity extends AppCompatActivity implements WifiConnectManag
                     intent = new Intent(LoginActivity.this, MainActivity.class);
                     startActivity(intent);
 
-                    intent = new Intent(LoginActivity.this, DeleteService.class);
-                    startService(intent);
+                    int dele_data = (int) SPUtils.get(LoginActivity.this,Const.DELETE_KEY,-1);
+                    Log.e("login_delete",dele_data+"");
+                    if(dele_data == -1){
+                        intent = new Intent(LoginActivity.this, DeleteService.class);
+                        startService(intent);
+                    }
+
                     finish();
                     break;
 

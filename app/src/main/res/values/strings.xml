@@ -129,7 +129,9 @@
     <string name="wifiPass_save_success">设置成功</string>
     <string name="wifiFailMsgprint">请连接可上网的网络</string>
     <string name="wifiTestPing">正在测试网络...</string>
-
+    <string name="image_artword">原图</string>
+    <string name="image_acetic_acid_white">醋酸白</string>
+    <string name="image_Lipiodol">碘</string>
     <string name="wifi_connecting">WiFi正在连接中 ... </string>
     <string name="wifi_start_connect">开始连接WiFi ... </string>
     <string name="wifi_test_net">wifi 连接成功，正在测试能否上网 ....</string>
@@ -176,6 +178,7 @@
     <string name="ftpname">FTP账号：</string>
     <string name="ftppassword">FTP密码：</string>
     <string name="ftpsetting">FTP设置</string>
+    <string name="setting_delete">删除设置</string>
     <string name="ftpLoginFaild">FTP服务器连接失败，请检查FTP账户密码是否正确。</string>
     <string name="ftpLoginSuccess">FTP服务器连接成功。</string>
     <string name="ftpAccountPasswordNull">请输入FTP账号密码</string>
@@ -187,8 +190,9 @@
     <string name="upLoadFaild">上传失败</string>
     <string name="getImage">获取图像</string>
     <string name="upLoadImage">上传图像</string>
-
-
+    <string name="setting_please_change">请选择</string>
+    <string name="forover_save">永久保留</string>
+    <string name="twoweek_delete">两周删除</string>
     <string name="authCodebtn">验证码    :</string>
     <string name="inputauthCode">输入验证码</string>
     <string name="authModifyTitle">修改密码</string>

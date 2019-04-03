@@ -32,35 +32,6 @@ public class FileUtils {
     private NetWorkUtils netWorkUtils;
     private FileCopyAndDelListener mListener;
 
-//    private Handler handler = new Handler() {
-//        @Override
-//        public void handleMessage(Message msg) {
-//            super.handleMessage(msg);
-//            if (loadingDialog.isShow()) {
-//                loadingDialog.dismiss();
-//            }
-//            switch (msg.what) {
-//                case 1:
-//                    SouthUtil.showToast(mContext, mContext.getString(R.string.copyFaild));
-//                    break;
-//                case 2:
-//                    SouthUtil.showToast(mContext, mContext.getString(R.string.copySuccess));
-//                    fromPath = Const.originalPath;
-//                    initDeleteFile();
-//                    netWorkUtils.getUrl();
-//                    break;
-//                case 3:
-//                    SouthUtil.showToast(mContext, mContext.getString(R.string.deletesuccess));
-//                    break;
-//                case 4:
-//                    SouthUtil.showToast(mContext, mContext.getString(R.string.deletefaild));
-//                    break;
-//                default:
-//                    break;
-//            }
-//        }
-//    };
-
     public FileUtils(Context context) {
         this.mContext = context;
 
@@ -167,7 +138,7 @@ public class FileUtils {
         isCopy = isCopy(new File(Const.originalPath));
         String screeningId = initGetSP();
 
-        if (screeningId != null) {
+        if (null != screeningId) {
             if (isCopy) {//默认路径存在文件
                 mListener.fileStartCopy();
 
@@ -273,7 +244,7 @@ public class FileUtils {
     /**
      * 删除文件夹
      */
-    public boolean deleteFile(File file) {
+    public static boolean deleteFile(File file) {
         if (file.exists()) {
             if (file.isFile()) {
                 file.delete();

@@ -72,20 +72,20 @@
 
             </LinearLayout>
 
-            <TextView
-                android:id="@+id/tv_case_video"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/case_image_video"
-                android:textSize="@dimen/textViewNameSize"
-                android:textColor="@color/textcase"
-                />
+            <!--<TextView-->
+                <!--android:id="@+id/tv_case_video"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:text="@string/case_image_video"-->
+                <!--android:textSize="@dimen/textViewNameSize"-->
+                <!--android:textColor="@color/textcase"-->
+                <!--/>-->
 
-            <ListView
-                android:id="@+id/case_recycler_vdieo"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="30dp"></ListView>
+            <!--<ListView-->
+                <!--android:id="@+id/case_recycler_vdieo"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_marginBottom="30dp"></ListView>-->
 
         </LinearLayout>
 

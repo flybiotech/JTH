@@ -5,6 +5,8 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.Adapter;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -12,11 +14,13 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.bigkoo.convenientbanner.ConvenientBanner;
+import com.bigkoo.convenientbanner.listener.OnItemClickListener;
 
 
 import org.litepal.LitePal;
 import org.litepal.LitePalDB;
 
+import java.io.File;
 import java.util.List;
 
 import butterknife.BindView;
@@ -24,9 +28,10 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import comvoice.example.zhangbin.startimage.R;
 import comvoice.example.zhangbin.startimage.model.User;
+import comvoice.example.zhangbin.startimage.utils.CaseListUtils;
 import comvoice.example.zhangbin.startimage.utils.DetailsUtils;
 
-public class MessageDetailsActivity extends AppCompatActivity {
+public class MessageDetailsActivity extends AppCompatActivity implements DetailsUtils.OnShowContentListener, OnItemClickListener, AdapterView.OnItemClickListener{
 
     @BindView(R.id.tv_title)
     TextView tvTitle;
@@ -40,15 +45,18 @@ public class MessageDetailsActivity extends AppCompatActivity {
     TextView tvImagenameshow01;
     @BindView(R.id.cb_show)
     ConvenientBanner cbShow;
-    @BindView(R.id.tv_case_video)
-    TextView tvCaseVideo;
-    @BindView(R.id.case_recycler_vdieo)
-    ListView caseRecyclerVdieo;
+//    @BindView(R.id.tv_case_video)
+//    TextView tvCaseVideo;
+//    @BindView(R.id.case_recycler_vdieo)
+//    ListView caseRecyclerVdieo;
     DetailsUtils detailsUtils;
-    String screenID = null;
+    String screenID = "";
     @BindView(R.id.btn_left)
     Button btnLeft;
-
+    private List<String> imageAll = null;
+    private User user = null;
+    private String id;//接受传过来的id值
+    private Adapter adapter;//视频展示的适配器
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -60,21 +68,13 @@ public class MessageDetailsActivity extends AppCompatActivity {
         initView();
     }
 
-//    @Override
-//    protected void onStart() {
-//        super.onStart();
-//
-//    }
-
     private void initView() {
         btnLeft.setVisibility(View.VISIBLE);
         btnLeft.setText(R.string.case_return);
-        List<User> users = null;
-        if (screenID != null) {
-            users = LitePal.where("screenId=?", screenID).find(User.class);
-        }
-        detailsUtils = new DetailsUtils(MessageDetailsActivity.this, tvDengjiClm, users);
-        detailsUtils.initDetils();
+        cbShow.setOnItemClickListener(this);
+        detailsUtils = new DetailsUtils(MessageDetailsActivity.this,cbShow,tvImagenameshow01);
+        detailsUtils.initView(screenID,MessageDetailsActivity.this);
+//        detailsUtils.initDetils();
     }
 
     @OnClick(R.id.btn_left)
@@ -82,5 +82,45 @@ public class MessageDetailsActivity extends AppCompatActivity {
         Intent intent=new Intent(MessageDetailsActivity.this,MainActivity.class);
         intent.putExtra("canshu",1);
         startActivity(intent);
+    }
+
+    @Override
+    public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+
+    }
+
+    @Override
+    public void onItemClick(int position) {
+        if (imageAll != null) {
+            Intent intent = new Intent(this, PreviewActivity.class);
+            intent.putExtra("msg", imageAll.get(position));
+            startActivity(intent);
+        }
+    }
+
+    @Override
+    public void initView(List<User> listMsg) {
+        if(listMsg != null && listMsg.size() > 0){
+            user = listMsg.get(0);
+            detailsUtils.initDetils(tvDengjiClm,listMsg);
+            detailsUtils.startImageShow(user, getString(R.string.image_artword), getString(R.string.image_acetic_acid_white),
+                    getString(R.string.image_Lipiodol), MessageDetailsActivity.this);
+        }
+    }
+
+    @Override
+    public void showImage(List<String> listImagePath) {
+        imageAll = listImagePath;
+        if (imageAll != null && imageAll.size() > 0) {
+            tvImagenameshow01.setText("图片展示 ： " + new File(imageAll.get(0)).getName());
+        }
+
+        detailsUtils.lunbo(imageAll);
+//        detailsUtils.videoShow(msg, this);
+    }
+
+    @Override
+    public void showVideo(List<String> listVideoPath) {
+
     }
 }

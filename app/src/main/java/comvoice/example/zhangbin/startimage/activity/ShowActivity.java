@@ -33,6 +33,7 @@ import org.json.JSONObject;
 import java.io.File;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -45,13 +46,16 @@ import comvoice.example.zhangbin.startimage.model.UserBean;
 import comvoice.example.zhangbin.startimage.service.UpLoadService;
 import comvoice.example.zhangbin.startimage.sp.SPUtils;
 import comvoice.example.zhangbin.startimage.utils.AlignedTextUtils;
+import comvoice.example.zhangbin.startimage.utils.CaseListUtils;
 import comvoice.example.zhangbin.startimage.utils.Const;
+import comvoice.example.zhangbin.startimage.utils.DialogSelectUtils;
 import comvoice.example.zhangbin.startimage.utils.FileUtils;
 import comvoice.example.zhangbin.startimage.utils.InstallApk;
 import comvoice.example.zhangbin.startimage.utils.LitepalUtils;
 import comvoice.example.zhangbin.startimage.utils.LoadingDialog;
 import comvoice.example.zhangbin.startimage.utils.NetWorkUtils;
 import comvoice.example.zhangbin.startimage.utils.SouthUtil;
+import comvoice.example.zhangbin.startimage.utils.ToastUtils;
 import comvoice.example.zhangbin.startimage.wifiinfo.WifiConnectManager;
 import okhttp3.Authenticator;
 import okhttp3.Call;
@@ -64,7 +68,7 @@ import okhttp3.RequestBody;
 import okhttp3.Response;
 import okhttp3.Route;
 
-public class ShowActivity extends AppCompatActivity implements UpLoadService.UpLoadFileProcess, WifiConnectManager.WifiConnectListener ,FileUtils.FileCopyAndDelListener {
+public class ShowActivity extends AppCompatActivity implements UpLoadService.UpLoadFileProcess, WifiConnectManager.WifiConnectListener ,FileUtils.FileCopyAndDelListener, DialogSelectUtils.DialogSelect {
     @BindView(R.id.tv_title)
     TextView tvTitle;
     //    @BindView(R.id.iv_screen)
@@ -127,7 +131,7 @@ public class ShowActivity extends AppCompatActivity implements UpLoadService.UpL
     String pass = "";
     String msgStr = "";
     private NetWorkUtils netWorkUtils;
-
+    DialogSelectUtils dialogSelectUtils ;
     private int isHaveSave=0;
     Handler mHandler = new Handler() {
 
@@ -185,8 +189,23 @@ public class ShowActivity extends AppCompatActivity implements UpLoadService.UpL
         fileUtils = new FileUtils(this,this);
         btnLeft.setVisibility(View.VISIBLE);
         btnLeft.setText(R.string.case_return);
-        UpLoadService.setUpLoadFileProcessListener(this);
+//        UpLoadService.setUpLoadFileProcessListener(this);
         netWorkUtils = new NetWorkUtils(this);
+        dialogSelectUtils = new DialogSelectUtils(ShowActivity.this,this);
+        caseListUtils = new CaseListUtils(this);
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        DialogSelectUtils.setDialogSelectListener(this);
+        UpLoadService.setUpLoadFileProcessListener(this);
+        String sc = (String) SPUtils.get(this,Const.SCREENID_KEY,"");
+        Log.e(TAG_RE+"SP",sc+"sp");
+        if(!"".equals(sc)){
+            Const.SPscreenId = sc;
+            dialogSelectUtils.showDialog();
+        }
     }
 
     @Override
@@ -237,16 +256,13 @@ public class ShowActivity extends AppCompatActivity implements UpLoadService.UpL
                 break;
             case R.id.bt_img:
 //                //先判断是否已自动复制，复制后再进行核销，核销成功后保存信息，最后获取图像
-                Log.e("TAG_1", "onViewClicked: isCopy = " + isCopy);
+
                 isCopy = fileUtils.isCopy(new File(Const.originalPath));
+                Log.e("TAG_1", "onViewClicked: isCopy = " + isCopy);
                 if (!isCopy) {
                     //开始链接局域网
                     WifiConnectManager.getInstance().connectWifi(LAN_WIFI_SSID, LAN_WIFI_PASS, Const.WIFI_TYPE_LAN, this);
                 }
-//                boolean isHave = installApk.isInstall();
-//                if(!isHave){
-//                    installApk(this,Const.FLY_SZB_apk);//打印服务插件本地路径);
-//                }
                 break;
             case R.id.btn_left:
                 finish();
@@ -286,9 +302,11 @@ public class ShowActivity extends AppCompatActivity implements UpLoadService.UpL
             SouthUtil.showToast(this, getString(R.string.register_verify_needinfo));
         } else {
             boolean isSaveSuceess = litepalUtils.userSave(etPScrennID.getText().toString(), etPName.getText().toString(), etPAge.getText().toString(), etPPhone.getText().toString(), etPHPV.getText().toString());
+            Log.e("TAG_111", "onViewClicked: isSaveSuceess = " + isSaveSuceess);
             if (isSaveSuceess) {
                 msg = "";
                 isHaveSave=1;
+                Log.e("TAG_11", "onViewClicked: screenid = " + screeningId);
                 initSaveSP();
                 //开始连接主机wifi
                 WifiConnectManager.getInstance().connectWifi(SZB_WIFI_SSID, SZB_WIFI_PASS, Const.WIFI_TYPE_SZB, this);
@@ -460,14 +478,22 @@ public class ShowActivity extends AppCompatActivity implements UpLoadService.UpL
 
     @Override//开始连接wifi
     public void startWifiConnecting(String type) {
-        if (type.equals(Const.WIFI_TYPE_SZB)) {
-            showDiolog(getString(R.string.wifiProcessMsgSZB));
-        } else if (type.equals(Const.WIFI_TYPE_LAN)) {
-            showDiolog(getString(R.string.wifiProcessMsgLAN));
-        }
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                if (type.equals(Const.WIFI_TYPE_SZB)) {
+                    showDiolog(getString(R.string.wifiProcessMsgSZB));
+                } else if (type.equals(Const.WIFI_TYPE_LAN)) {
+                    showDiolog(getString(R.string.wifiProcessMsgLAN));
+                }
+            }
+        });
+
 
     }
-
+    private List<String> stringList;
+    private CaseListUtils caseListUtils;
+    private String TAG_RE = "showactivity_";
     @Override //wifi 连接成功
     public void wifiConnectSuccess(String type) {
 
@@ -476,8 +502,21 @@ public class ShowActivity extends AppCompatActivity implements UpLoadService.UpL
             if (msg.equals("")) { //文件上传
                 dismissDiolog();
                 if(fileUtils.isCopy(new File(Const.fromPath+Const.SPscreenId+"/"))){
+                    stringList = SPUtils.getPathList(this,Const.SPscreenId);
+                    //先判断是否选择有图片，如果有直接上传，如果没有，则查询本地全部图片上传
+                    if(null != stringList && stringList.size() > 0){
+                        Const.stringList = stringList;
+                    }else {
+                        Const.stringList = caseListUtils.ImageShow();
+                    }
 
-                    netWorkUtils.getUrl();
+                    if(null != Const.stringList && Const.stringList.size() > 0){
+                        Log.e(TAG_RE,Const.stringList.size()+",,"+Const.stringList.get(0));
+                        netWorkUtils.getUrl();
+                    }else {
+                        Log.e(TAG_RE, getString(R.string.file_no_exist));
+                    }
+//                    netWorkUtils.getUrl();
                 }
             } else {
 
@@ -546,7 +585,6 @@ public class ShowActivity extends AppCompatActivity implements UpLoadService.UpL
     @Override  //没有搜到到指定的wifi ,将会在子线程中持续 搜索指定的wifi
     public void wifiCycleSearch(String type, boolean isSSID, int count) {
 
-
         if (type.equals(Const.WIFI_TYPE_SZB)) {
             ssid = SZB_WIFI_SSID;
             pass = SZB_WIFI_PASS;
@@ -599,13 +637,15 @@ public class ShowActivity extends AppCompatActivity implements UpLoadService.UpL
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-
+                showDiolog("已上传:" + (int) percent + " %");
                 if (percent >= 100.0) {
-                    showDiolog("已上传:" + (int) percent + " %");
+
                     TimerTask timerTask = new TimerTask() {
                         @Override
                         public void run() {
                             dismissDiolog();
+                            SPUtils.remove(ShowActivity.this,Const.SCREENID_KEY);
+//                            ToastUtils.showToast(ShowActivity.this, getString(R.string.import_Success));
                             Intent intent = new Intent(ShowActivity.this, MainActivity.class);
                             startActivity(intent);
                         }
@@ -630,10 +670,14 @@ public class ShowActivity extends AppCompatActivity implements UpLoadService.UpL
     }
 
     @Override
+    public void loginOut(boolean outResult) {
+
+    }
+
+    @Override
     public void fileCopySuccess() {
-        if (msg.equals("")) {
-            WifiConnectManager.getInstance().connectWifi(LAN_WIFI_SSID, LAN_WIFI_PASS,Const.WIFI_TYPE_LAN,this);
-        }
+        dismissDiolog();
+
     }
 
     @Override
@@ -673,5 +717,35 @@ public class ShowActivity extends AppCompatActivity implements UpLoadService.UpL
         unbinder.unbind();
     }
 
+    @Override
+    public void getIndex(int type) {
+        dialogSelectUtils.dismissDialog();
+        switch (type){
+            case 0:
+//                dialogSelectUtils.dismissDialog();
+                String SZB_WIFI_SSID = (String) SPUtils.get(this, Const.SZB_WIFI_SSID_KEY, "");
+                String SZB_WIFIF_PASS = (String) SPUtils.get(this, Const.SZB_WIFI_PASS_KEY, "");
+                Log.e("TAG_1", "onItemClick: mListenner = "+this );
+//                if (mListenner != null) {
+                WifiConnectManager.getInstance().connectWifi(SZB_WIFI_SSID, SZB_WIFIF_PASS, Const.WIFI_TYPE_SZB, this);
+//                }
+                break;
+            case 1:
+                Intent intent = new Intent(this, ImageShowActivity.class);
+                startActivity(intent);
+                break;
+            case 2:
+
+                String LAN_WIFI_SSID = (String) SPUtils.get(this, Const.LAN_WIFI_SSID_KEY, "");
+                String LAN_WIFI_PASS = (String) SPUtils.get(this, Const.LAN_WIFI_PASS_KEY, "");
+//                Log.e("TAG_1", "onItemClick: mListenner = "+mListenner );
+//                if (mListenner != null) {
+                WifiConnectManager.getInstance().connectWifi(LAN_WIFI_SSID, LAN_WIFI_PASS, Const.WIFI_TYPE_LAN, this);
+//                }
+
+                break;
+            default:break;
+        }
+    }
 }
 

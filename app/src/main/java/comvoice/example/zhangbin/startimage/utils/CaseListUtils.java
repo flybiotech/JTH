@@ -45,7 +45,7 @@ public class CaseListUtils {
 
         String YTpath=path + "原图/" ;
         String CSBpath=path + "醋酸白/" ;
-        String DYpath=path + "碘油/" ;
+        String DYpath=path + "碘/" ;
 
         YTlist.addAll(ImageSelect(YTpath));
         CSBlist.addAll(ImageSelect(CSBpath));
