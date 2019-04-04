@@ -91,7 +91,7 @@ public class WifiConnectManager {
 
 
     //获取系统当前连接的wifi 的ssid
-    private String getSysConnectedSSID() {
+    public String getSysConnectedSSID() {
         initWifiManager();
         initConnectivityManager();
         WifiInfo wifiInfo = wifiManager.getConnectionInfo();
