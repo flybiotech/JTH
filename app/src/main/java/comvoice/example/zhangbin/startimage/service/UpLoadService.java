@@ -52,7 +52,7 @@ public class UpLoadService extends Service {
         @Override
         protected String doInBackground(String... strings) {
 
-                String path= Const.fromPath+Const.SPscreenId;
+                String path= Const.fromPath+Const.SPscreenId+"/";
                 File file=new File(path);//某次筛查的全部文件，即根目录，如100
                 if (file.exists()) {
                         boolean isLoginSuccess = ftpLogin();
@@ -205,19 +205,21 @@ public class UpLoadService extends Service {
             //文件上传成功
             if (success == true) {
                 num=0;
-               initSize(romotUpLoadePath,localFile);
-                //将已上传数据的百分比传递给广播，实现ui界面的更新
-                double percent=((double)FTPAllSize/LocalAllSize)*100;
-                if (upLoadFileProcess != null) {
-                    upLoadFileProcess.getUpLoadFileProcessPrecent(percent);
-                }
+               boolean isComplete = initSize(romotUpLoadePath,localFile);
+               if(isComplete){
+                   //将已上传数据的百分比传递给广播，实现ui界面的更新
+                   double percent=((double)FTPAllSize/LocalAllSize)*100;
+                   if (upLoadFileProcess != null) {
+                       upLoadFileProcess.getUpLoadFileProcessPrecent(percent);
+                   }
 //                initDelete(localFile.getAbsolutePath());
 //
-                if(percent>=100){
+                   if(percent>=100){
 //                    fileUtils.deleteFile(new File(Const.fromPath+Const.SPscreenId));
-                    ftpLogOut(2);
+                       ftpLogOut(2);
 
-                }
+                   }
+               }
                 return success;
             }else {//文件上传失败后，再次进行上传，最多上传4次
                 if(num<=3){
@@ -268,13 +270,17 @@ public class UpLoadService extends Service {
 
     }
     //得到服务器文件大小，刚刚上传成功的,如果上传成功，但是该文件的大小没有计入总大小，则重复进行计算
-    private void initSize(String path,File localFile){
+    private boolean initSize(String path,File localFile){
         FTPFile[]ftpFiles= new FTPFile[0];
         try {
             ftpClient.enterLocalPassiveMode();
             ftpFiles = ftpClient.listFiles(path+localFile.getName());
             if(ftpFiles.length>0){
-                FTPAllSize+=ftpFiles[0].getSize();
+                if(ftpFiles[0].getSize() == localFile.length()){
+                    FTPAllSize+=ftpFiles[0].getSize();
+                    return true;
+                }
+
                 Log.e("loadSuccess",localFile.getName() + "上传成功"+FTPAllSize);
             }else {
                 if(num<=3){
@@ -284,7 +290,7 @@ public class UpLoadService extends Service {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
+        return false;
     }
     //文件复制成功后删除原始文件
     private void initDelete(String path){

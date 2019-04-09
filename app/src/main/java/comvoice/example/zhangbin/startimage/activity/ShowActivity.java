@@ -29,6 +29,7 @@ import com.google.gson.Gson;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.litepal.LitePal;
 
 import java.io.File;
 
@@ -42,6 +43,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
 import comvoice.example.zhangbin.startimage.R;
+import comvoice.example.zhangbin.startimage.model.User;
 import comvoice.example.zhangbin.startimage.model.UserBean;
 import comvoice.example.zhangbin.startimage.service.UpLoadService;
 import comvoice.example.zhangbin.startimage.sp.SPUtils;
@@ -67,6 +69,11 @@ import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 import okhttp3.Route;
+import rx.Observable;
+import rx.Subscriber;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Action1;
+import rx.schedulers.Schedulers;
 
 public class ShowActivity extends AppCompatActivity implements UpLoadService.UpLoadFileProcess, WifiConnectManager.WifiConnectListener ,FileUtils.FileCopyAndDelListener, DialogSelectUtils.DialogSelect {
     @BindView(R.id.tv_title)
@@ -200,12 +207,7 @@ public class ShowActivity extends AppCompatActivity implements UpLoadService.UpL
         super.onStart();
         DialogSelectUtils.setDialogSelectListener(this);
         UpLoadService.setUpLoadFileProcessListener(this);
-        String sc = (String) SPUtils.get(this,Const.SCREENID_KEY,"");
-        Log.e(TAG_RE+"SP",sc+"sp");
-        if(!"".equals(sc)){
-            Const.SPscreenId = sc;
-            dialogSelectUtils.showDialog();
-        }
+
     }
 
     @Override
@@ -219,6 +221,12 @@ public class ShowActivity extends AppCompatActivity implements UpLoadService.UpL
         } else {
             showDiolog(getString(R.string.fileCopying));
             fileUtils.startCopyFileAndDel();
+//            String sc = (String) SPUtils.get(this,Const.SCREENID_KEY,"");
+//            Log.e(TAG_RE+"SP",sc+"sp");
+//            if(!"".equals(sc)){
+//                Const.SPscreenId = sc;
+                dialogSelectUtils.showDialog();
+//            }
         }
     }
 
@@ -260,8 +268,10 @@ public class ShowActivity extends AppCompatActivity implements UpLoadService.UpL
                 isCopy = fileUtils.isCopy(new File(Const.originalPath));
                 Log.e("TAG_1", "onViewClicked: isCopy = " + isCopy);
                 if (!isCopy) {
-                    //开始链接局域网
-                    WifiConnectManager.getInstance().connectWifi(LAN_WIFI_SSID, LAN_WIFI_PASS, Const.WIFI_TYPE_LAN, this);
+                    //判断是否已核销，核销成功就直接连接视珍宝wifi
+                    isIndefication();
+//                    //开始链接局域网
+//                    WifiConnectManager.getInstance().connectWifi(LAN_WIFI_SSID, LAN_WIFI_PASS, Const.WIFI_TYPE_LAN, this);
                 }
                 break;
             case R.id.btn_left:
@@ -269,7 +279,33 @@ public class ShowActivity extends AppCompatActivity implements UpLoadService.UpL
                 break;
         }
     }
+    private List<User> userList;
+    //判断是否已核销
+    private void isIndefication(){
+        String screenid = etPScrennID.getText().toString().trim();
+        if(!"".equals(screenid)){
+            Observable.create(new Observable.OnSubscribe<List<User>>() {
+                @Override
+                public void call(Subscriber<? super List<User>> subscriber) {
+                    userList = LitePal.where("screenId = ?",screenid).find(User.class);
+                    subscriber.onNext(userList);
 
+                }
+            })
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(new Action1<List<User>>() {
+                        @Override
+                        public void call(List<User> s) {
+                            if(s.size() > 0){
+                                WifiConnectManager.getInstance().connectWifi(SZB_WIFI_SSID, SZB_WIFI_PASS, Const.WIFI_TYPE_SZB, ShowActivity.this);
+                            }else {
+                                WifiConnectManager.getInstance().connectWifi(LAN_WIFI_SSID, LAN_WIFI_PASS, Const.WIFI_TYPE_LAN, ShowActivity.this);
+                            }
+                        }
+                    });
+        }
+    }
     //清空输入框
     private void clearInput() {
         etPScrennID.setText("");

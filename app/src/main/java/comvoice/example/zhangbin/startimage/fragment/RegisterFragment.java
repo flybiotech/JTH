@@ -92,7 +92,7 @@ public class RegisterFragment extends Fragment implements AdapterView.OnItemClic
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
-            dismissDiolog();
+//            dismissDiolog();
             if (msg.what == 1) {
                 initData();
             }
@@ -123,8 +123,10 @@ public class RegisterFragment extends Fragment implements AdapterView.OnItemClic
         UpLoadService.setUpLoadFileProcessListener(this);
         DialogSelectUtils.setDialogSelectListener(this);
         fileUtils.startCopyFileAndDel();
+        //判断本地是否保存有已核销未上传的患者id
         String sc = (String) SPUtils.get(getContext(),Const.SCREENID_KEY,"");
         Log.e(TAG_RE+"SP",sc+"sp");
+        //如果有，弹出选择框
         if(!"".equals(sc)){
             Const.SPscreenId = sc;
             dialogSelectUtils.showDialog();
@@ -135,13 +137,13 @@ public class RegisterFragment extends Fragment implements AdapterView.OnItemClic
     @Override
     public void onResume() {
         super.onResume();
-        Log.e(TAG_RE+"resume","resume");
+//        Log.e(TAG_RE+"resume","resume");
         initGetData();
 
     }
 
     private void initGetData() {
-        showDiolog(getString(R.string.loadingMEssage));
+//        showDiolog(getString(R.string.loadingMEssage));
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -254,8 +256,18 @@ public class RegisterFragment extends Fragment implements AdapterView.OnItemClic
     @Override
     public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
 //        if(!fileUtils.isCopy(new File(Const.originalPath))){
+        String screenid = userList.get(i).getScreenId();
+        Const.SPscreenId = screenid;
+        initSaveSP(screenid);
         dialogSelectUtils.showDialog();
 //        }
+    }
+
+    /**
+     * 保存成功后更新本地存储的screenid，用做复制的目标路径
+     */
+    private void initSaveSP(String screeningId) {
+        SPUtils.put(getContext(), Const.SCREENID_KEY, screeningId);
     }
 
     @OnClick({R.id.imageview, R.id.iv_screen})
@@ -337,8 +349,6 @@ public class RegisterFragment extends Fragment implements AdapterView.OnItemClic
                     dismissDiolog();
                     //清除本地保留的Screenid
                     SPUtils.remove(getContext(),Const.SCREENID_KEY);
-                    initGetData();
-
                     ToastUtils.showToast(getContext(), getString(R.string.import_Success));
                     Log.e(TAG_RE+"getPercent",percent+"，，");
                 }
@@ -350,6 +360,7 @@ public class RegisterFragment extends Fragment implements AdapterView.OnItemClic
     @Override
     public void getUpLoadSuccess() {
 //        onResume();
+        initGetData();
     }
 
     //上传失败
@@ -494,6 +505,7 @@ public class RegisterFragment extends Fragment implements AdapterView.OnItemClic
     public void onStop() {
         super.onStop();
         Log.e("TAG_1", "onStop: FRAGMENT " );
+        dialogSelectUtils.dismissDialog();
         WifiConnectManager.getInstance().stopThreadConnectWifi();
     }
     private static final int REQUEST_SELECT_IMAGES_CODE = 0x01;

@@ -7,6 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -34,7 +35,7 @@ public class ImageShowActivity extends AppCompatActivity {
     @BindView(R.id.tv_actionBar_title)
     TextView tvActionBarTitle;
     @BindView(R.id.tv_actionBar_commit)
-    TextView tvActionBarCommit;
+    Button tvActionBarCommit;
     @BindView(R.id.iv_item_check)
     ImageView ivItemCheck;
     @BindView(R.id.ll_pre_select)
