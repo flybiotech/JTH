@@ -391,7 +391,7 @@ public class RegisterFragment extends Fragment implements AdapterView.OnItemClic
             dismissDiolog();
             boolean isHave = installApk.isInstall();
             if(!isHave){
-                installApk(getActivity(),Const.FLY_SZB_apk);//打印服务插件本地路径);
+                installApk(getActivity(),Const.FLY_SZB_apk);
             }
         } else if (type.equals(Const.WIFI_TYPE_LAN)) {
             //上传

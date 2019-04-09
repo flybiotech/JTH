@@ -407,11 +407,32 @@ public class ShowActivity extends AppCompatActivity implements UpLoadService.UpL
             } else {
                 Toast.makeText(this, getString(R.string.screenFaild), Toast.LENGTH_SHORT).show();
             }
+            isUsed(screeningId);
         } catch (JSONException e) {
             e.printStackTrace();
         }
     }
 
+    //查询该核销码是否已使用
+    private void isUsed(String screeningId){
+        Observable.create(new Observable.OnSubscribe<List<User>>() {
+            @Override
+            public void call(Subscriber<? super List<User>> subscriber) {
+                userList = LitePal.where("screenId = ?" ,screeningId ).find(User.class);
+                subscriber.onNext(userList);
+            }
+        }).subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Action1<List<User>>() {
+                    @Override
+                    public void call(List<User> listMessages) {
+                        if (listMessages.size() > 0) {
+                            ToastUtils.showToast(ShowActivity.this,getString(R.string.register_verify_mobile_2));
+                            finish();
+                        }
+                    }
+                });
+    }
 
     private void showDiolog(String msg) {
         runOnUiThread(new Runnable() {

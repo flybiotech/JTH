@@ -38,9 +38,12 @@
         android:roundIcon="@mipmap/icon"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".activity.DeleteSettingActivity"></activity>
-        <activity android:name=".activity.PreviewActivity" android:launchMode="singleTask"
-            android:screenOrientation="landscape"></activity>
+        <activity android:name=".activity.DeleteActivity"></activity>
+        <activity android:name=".activity.DeleteSettingActivity" />
+        <activity
+            android:name=".activity.PreviewActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="landscape" />
         <activity
             android:name=".activity.ImageShowActivity"
             android:launchMode="singleTask"

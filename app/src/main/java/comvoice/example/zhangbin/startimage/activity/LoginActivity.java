@@ -107,7 +107,7 @@ public class LoginActivity extends AppCompatActivity implements WifiConnectManag
                     intent = new Intent(LoginActivity.this, MainActivity.class);
                     startActivity(intent);
 
-                    int dele_data = (int) SPUtils.get(LoginActivity.this, Const.DELETE_KEY, -1);
+                    int dele_data = (int) SPUtils.get(LoginActivity.this, Const.DELETE_KEY, 1);
                     Log.e("login_delete", dele_data + "");
                     if (dele_data == -1) {
                         intent = new Intent(LoginActivity.this, DeleteService.class);
@@ -346,7 +346,7 @@ public class LoginActivity extends AppCompatActivity implements WifiConnectManag
         boolean result = WifiConnectManager.getInstance().getWifiConnectResult();
         String ssid = WifiConnectManager.getInstance().getSysConnectedSSID().replace("\"","");
         SPUtils.put(this, Const.LAN_WIFI_SSID_KEY, ssid);
-        SPUtils.put(this, Const.LAN_WIFI_PASS_KEY, "********");
+        SPUtils.put(this, Const.LAN_WIFI_PASS_KEY, "");
 
         // false  表示没有切换wifi ,就不需要等待wifi稳定
         if (!result) {

@@ -47,7 +47,7 @@ public class Const {
     public static String DELETE_KEY = "DELETE_DATA";
 
 
-    public static final String page="com.fang.li";
+    public static final String page="com.molink.brean.fly";
     public static String apk="base.apk";
     public static final List<User> msgList=new ArrayList<>();
 
@@ -63,7 +63,7 @@ public class Const {
     public static String MD5_USERNAME = "jthapi"; //
     public static String MD5_PASSWORD = "PvL3PVDtHsyAyUo"; //
 
-    public static String FLY_SZB_apk = Environment.getExternalStorageDirectory() + "/FLY_SZB_V1.1.apk";
+    public static String FLY_SZB_apk = Environment.getExternalStorageDirectory() + "/FLY-SZB.apk";
 
 
     public static List<String>stringList;//选择的图片的集合

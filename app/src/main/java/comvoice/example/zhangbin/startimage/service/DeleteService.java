@@ -48,7 +48,7 @@ public class DeleteService extends Service {
     //查询本地数据库，是否有患者的登记日期到达两周
 
     private void selectLitepal(){
-        userList = LitePal.findAll(User.class);
+        userList = LitePal.where("Identification = ?", "1").find(User.class);
         long nowdata = getDate();
         if(userList.size() > 0){
             for(int i = 0;i<userList.size();i++){
@@ -65,6 +65,16 @@ public class DeleteService extends Service {
                         }
                         Log.e(TAG_+"1",nowdata+",,,"+redata);
                     }
+//                    if(nowdata - redata >= 300000){
+//                        File file = new File(Const.fromPath+userList.get(i).getScreenId()+"/");
+//                        boolean delete = false;
+//                        if(file.exists()){
+//                            delete = FileUtils.deleteFile(file);
+//                        }
+//                        Log.e(TAG_+"1",nowdata+",,,"+redata);
+//                    }
+
+
                 }
 
             }
