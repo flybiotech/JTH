@@ -44,17 +44,17 @@ public class MessageSelectUtils {
         }
         //姓名
         if (editName.getText().toString().trim().equals("") || editName.getText().toString().trim() == null) {
-            f1 = false;
+            f2 = false;
         } else {
             list2.add(editName.getText().toString().trim());
-            f1 = true;
+            f2 = true;
         }
         //手机电话号码
         if (editTel.getText().toString().trim().equals("") || editTel.getText().toString().trim() == null) {
-            f2 = false;
+            f3 = false;
         } else {
             list2.add(editTel.getText().toString().trim());
-            f2 = true;
+            f3 = true;
         }
 
 //        //身份证号
@@ -134,11 +134,11 @@ public class MessageSelectUtils {
                 list1 = LitePal.where(list3.get(0)+"  and  "+list3.get(1)+"   and   "+list3.get(2), "%"+list.get(0)+"%","%"+list.get(1)+"%","%"+list.get(2)+"%").find(User.class);
 
                 break;
-            case 4:
-
-                list1 = LitePal.where(list3.get(0)+"  and  "+list3.get(1)+"   and   "+list3.get(2)+"   and   "+list3.get(3), "%"+list.get(0)+"%","%"+list.get(1)+"%","%"+list.get(2)+"%","%"+list.get(3)+"%").find(User.class);
-
-                break;
+//            case 4:
+//
+//                list1 = LitePal.where(list3.get(0)+"  and  "+list3.get(1)+"   and   "+list3.get(2)+"   and   "+list3.get(3), "%"+list.get(0)+"%","%"+list.get(1)+"%","%"+list.get(2)+"%","%"+list.get(3)+"%").find(User.class);
+//
+//                break;
         }
         return list1;
 

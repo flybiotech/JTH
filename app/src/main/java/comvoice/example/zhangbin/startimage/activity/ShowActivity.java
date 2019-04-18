@@ -125,7 +125,7 @@ public class ShowActivity extends AppCompatActivity implements UpLoadService.UpL
     private LitepalUtils litepalUtils;
     private InstallApk installApk;
     private FileUtils fileUtils;
-    private String screeningId, name, age, mobile, createAt, hpv;
+    private String screeningId = "", name = "", age = "", mobile = "", createAt = "", hpv = "";
     private boolean isReview;//判断第几次筛查
     private boolean isCopy;//判断是否已复制
     private String msg;
