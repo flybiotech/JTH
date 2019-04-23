@@ -63,7 +63,7 @@ public class Const {
     public static String MD5_USERNAME = "jthapi"; //
     public static String MD5_PASSWORD = "PvL3PVDtHsyAyUo"; //
 
-    public static String FLY_SZB_apk = Environment.getExternalStorageDirectory() + "/FLY-SZB.apk";
+    public static String FLY_SZB_apk = Environment.getExternalStorageDirectory() + "/com.stub.StubApp.apk";
 
 
     public static List<String>stringList;//选择的图片的集合

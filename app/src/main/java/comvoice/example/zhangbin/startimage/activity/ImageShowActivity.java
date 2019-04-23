@@ -102,12 +102,12 @@ public class ImageShowActivity extends AppCompatActivity {
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.iv_actionBar_back:
+                SPUtils.remove(this,Const.SPscreenId);
+                SelectionManager.getInstance().removeAll();
                 finish();
                 break;
             case R.id.tv_actionBar_commit:
-//                setResult(RESULT_OK,new Intent());
                 Const.stringList = SelectionManager.getInstance().getSelectPaths();
-                Log.e(TAG_IMAGE,Const.SPscreenId);
                 SPUtils.setPathList(this,Const.SPscreenId,Const.stringList);
                 SelectionManager.getInstance().removeAll();
                 finish();

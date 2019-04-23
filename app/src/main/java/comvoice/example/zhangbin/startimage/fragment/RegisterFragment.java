@@ -37,6 +37,7 @@ import comvoice.example.zhangbin.startimage.activity.ImageShowActivity;
 import comvoice.example.zhangbin.startimage.activity.ScanningActivity;
 import comvoice.example.zhangbin.startimage.activity.ShowActivity;
 import comvoice.example.zhangbin.startimage.adapter.MessageAdapter;
+import comvoice.example.zhangbin.startimage.manager.SelectionManager;
 import comvoice.example.zhangbin.startimage.model.ListMessage;
 import comvoice.example.zhangbin.startimage.service.UpLoadService;
 import comvoice.example.zhangbin.startimage.sp.SPUtils;
@@ -349,6 +350,8 @@ public class RegisterFragment extends Fragment implements AdapterView.OnItemClic
                     dismissDiolog();
                     //清除本地保留的Screenid
                     SPUtils.remove(getContext(),Const.SCREENID_KEY);
+                    SPUtils.remove(getContext(),Const.SPscreenId);
+                    SelectionManager.getInstance().removeAll();
                     ToastUtils.showToast(getContext(), getString(R.string.import_Success));
                     Log.e(TAG_RE+"getPercent",percent+"，，");
                 }

@@ -104,11 +104,16 @@ public class LoginActivity extends AppCompatActivity implements WifiConnectManag
                     SouthUtil.showToast(LoginActivity.this, getString(R.string.login_success));
                     Const.DoctorPhone = mobile;
                     Intent intent = null;
+//                    if(mobile.equals("jth")){
+//
+//                    }else {
+//
+//                    }
                     intent = new Intent(LoginActivity.this, MainActivity.class);
                     startActivity(intent);
 
                     int dele_data = (int) SPUtils.get(LoginActivity.this, Const.DELETE_KEY, 1);
-                    Log.e("login_delete", dele_data + "");
+
                     if (dele_data == -1) {
                         intent = new Intent(LoginActivity.this, DeleteService.class);
                         startService(intent);
@@ -223,6 +228,13 @@ public class LoginActivity extends AppCompatActivity implements WifiConnectManag
             dismissDiolog();
             return;
         }
+
+        if(mobile.equals("123456") && password.equals("jth12345678")){
+            Intent intent = new Intent(LoginActivity.this,AdminActivity.class);
+            startActivity(intent);
+            return;
+        }
+
         SPUtils.put(LoginActivity.this, Const.DOC_MOBILE, mobile);
         SPUtils.put(LoginActivity.this, Const.DOC_PASSWORD, password);
         LAN_WIFI_SSID = (String) SPUtils.get(this, Const.LAN_WIFI_SSID_KEY, "");
@@ -343,6 +355,7 @@ public class LoginActivity extends AppCompatActivity implements WifiConnectManag
     private void loginInit() {
 
         showDiolog(getString(R.string.login_in));
+
         boolean result = WifiConnectManager.getInstance().getWifiConnectResult();
         String ssid = WifiConnectManager.getInstance().getSysConnectedSSID().replace("\"","");
         SPUtils.put(this, Const.LAN_WIFI_SSID_KEY, ssid);

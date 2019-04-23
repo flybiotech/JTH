@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,6 +20,9 @@ import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import butterknife.BindView;
@@ -31,13 +35,22 @@ import comvoice.example.zhangbin.startimage.activity.UploadActivity;
 import comvoice.example.zhangbin.startimage.activity.WifiSettingActivity;
 import comvoice.example.zhangbin.startimage.sp.SPUtils;
 import comvoice.example.zhangbin.startimage.utils.Const;
+import comvoice.example.zhangbin.startimage.utils.DeleteUtils;
+import comvoice.example.zhangbin.startimage.utils.LoadingDialog;
 import comvoice.example.zhangbin.startimage.utils.SouthUtil;
+import comvoice.example.zhangbin.startimage.utils.UpdateManager;
 import comvoice.example.zhangbin.startimage.utils.WriteExcelUtils;
+import comvoice.example.zhangbin.startimage.wifiinfo.WifiConnectManager;
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class SystemFragment extends Fragment implements AdapterView.OnItemClickListener{
+public class SystemFragment extends Fragment implements AdapterView.OnItemClickListener,WifiConnectManager.WifiConnectListener{
 
     @BindView(R.id.tv_title)
     TextView tvTitle;
@@ -52,6 +65,8 @@ public class SystemFragment extends Fragment implements AdapterView.OnItemClickL
     private ListAdapter adapter;
     private WriteExcelUtils writeExcelUtils;
     private List<String>dialogList;
+    private DeleteUtils deleteUtils;
+    private LoadingDialog loadingDialog;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -73,10 +88,15 @@ public class SystemFragment extends Fragment implements AdapterView.OnItemClickL
 //        stringList.add(getString(R.string.importExcel));
         stringList.add(getString(R.string.wifiSet));
         stringList.add(getString(R.string.setting_delete));
+        stringList.add(getString(R.string.upload_app));;
 //        stringList.add(getString(R.string.ftpsetting));
 //        stringList.add(getString(R.string.upload));
         adapter=new ArrayAdapter<String>(getContext(),android.R.layout.simple_list_item_1,stringList);
         listSetting.setAdapter( adapter);
+        wifiConnectManager = WifiConnectManager.getInstance();
+        updateManager = new UpdateManager(getContext());
+        deleteUtils = new DeleteUtils(getContext());
+        loadingDialog = new LoadingDialog(getContext());
     }
 
     @Override
@@ -100,7 +120,10 @@ public class SystemFragment extends Fragment implements AdapterView.OnItemClickL
                 dialogList = new ArrayList<>();
                 dialogList.add(getString(R.string.forover_save));
                 dialogList.add(getString(R.string.twoweek_delete));
-                advancedDialog(dialogList);
+                deleteUtils.advancedDialog(dialogList);
+                break;
+            case 2:
+                connectLan();
                 break;
 //            case 2:
 //                startActivity(new Intent(getContext(), FTPSettingActivity.class));
@@ -110,46 +133,107 @@ public class SystemFragment extends Fragment implements AdapterView.OnItemClickL
 //                break;
         }
     }
-    /**
-     * 自定义弹出框布局
-     */
-    public void advancedDialog(List stringList) {
-        LinearLayout linearLayoutMain = new LinearLayout(getContext());//自定义一个布局文件
-        linearLayoutMain.setLayoutParams(new ActionBar.LayoutParams(
-                ActionBar.LayoutParams.MATCH_PARENT, ActionBar.LayoutParams.WRAP_CONTENT));
-        ListView listView = new ListView(getContext());//this为获取当前的上下文
-        listView.setFadingEdgeLength(0);
-        listView.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
-        ArrayAdapter arrayAdapter = new ArrayAdapter(getContext(), android.R.layout.simple_list_item_1, stringList);
-        listView.setAdapter(arrayAdapter);
-        linearLayoutMain.addView(listView);//往这个布局中加入listview
-        final AlertDialog dialog = new AlertDialog.Builder(getContext())
-                .setTitle(getContext().getString(R.string.setting_please_change)).setView(linearLayoutMain)//在这里把写好的这个listview的布局加载dialog中
-                .setNegativeButton(getContext().getString(R.string.button_cancel), new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.cancel();
-                    }
-                }).create();
-        dialog.setCanceledOnTouchOutside(false);//使除了dialog以外的地方不能被点击
-        dialog.show();
-        listView.setFocusable(false);
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int arg2, long l) {
-                switch (arg2) {
-                    case 0:
-                        SPUtils.put(getContext(), Const.DELETE_KEY,1);//永久保留
-                        break;
-                    case 1:
-                        SPUtils.put(getContext(), Const.DELETE_KEY,-1);//两周删除
-                        break;
-                    default:
-                        break;
+    private String LAN_WIFI_SSID = "";
+    private String LAN_WIFI_PASS = "";
+    private WifiConnectManager wifiConnectManager;
+    private UpdateManager updateManager;
+    //开始连接局域网WIFI
+    private void connectLan(){
+        LAN_WIFI_SSID = (String) SPUtils.get(getContext(),Const.LAN_WIFI_SSID_KEY,"");
+        LAN_WIFI_PASS = (String) SPUtils.get(getContext(),Const.LAN_WIFI_PASS_KEY,"");
+        wifiConnectManager.connectWifi(LAN_WIFI_SSID,LAN_WIFI_PASS,Const.WIFI_TYPE_LAN,this);
+    }
+
+    private OkHttpClient okHttpClient;
+    private void initDownLoad(){
+        okHttpClient=new OkHttpClient();
+        Request request=new Request.Builder()
+                .url("http://flybiotech.w231.mc-test.com/jth_user/version.txt")
+                .build();
+        okHttpClient.newCall(request).enqueue(new MyCient());
+    }
+    private class MyCient implements Callback {
+
+        @Override
+        public void onFailure(Call call, IOException e) {
+            getActivity().runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    Toast.makeText(getContext(), "访问失败", Toast.LENGTH_SHORT).show();
                 }
-                SouthUtil.showToast(getContext(),getString(R.string.wifiPass_save_success));
-                dialog.cancel();
-            }
-        });
+            });
+
+        }
+
+        @Override
+        public void onResponse(Call call, final Response response) throws IOException {
+            final String res=response.body().string();
+            getActivity().runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    updateManager.initJson(res);
+                }
+            });
+        }
+    }
+    @Override
+    public void startWifiConnecting(String type) {
+        showDialog(getString(R.string.wifiProcessMsgLAN));
+    }
+
+    @Override
+    public void wifiConnectSuccess(String type) {
+        dismissDialog();
+        if (type.equals(Const.WIFI_TYPE_LAN)) {
+            Log.e("system",11+"");
+            initDownLoad();
+        }
+    }
+
+    @Override
+    public void wifiConnectFalid(String type) {
+        dismissDialog();
+        if (type.equals(Const.WIFI_TYPE_LAN))
+            SouthUtil.showToast(getContext(), getString(R.string.wifiFaildMSg));
+    }
+
+    @Override
+    public void wifiCycleSearch(String type, boolean isSSID, int count) {
+        dismissDialog();
+        if (type.equals(Const.WIFI_TYPE_LAN) ) {
+            getActivity().runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    if (isSSID)
+                        wifiConnectManager.connectWithWpa(LAN_WIFI_SSID,LAN_WIFI_PASS);
+                }
+            });
+        }
+    }
+
+    @Override
+    public void wifiInputNameEmpty(String type) {
+        dismissDialog();
+        if (type.equals(Const.WIFI_TYPE_LAN)) {
+            SouthUtil.showToast(getContext(), getString(R.string.wifiFailLANMsg));
+        }
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        dismissDialog();
+    }
+
+    private void showDialog(String msg){
+        if(loadingDialog != null){
+            loadingDialog.setMessage(msg);
+            loadingDialog.dialogShow();
+        }
+    }
+    private void dismissDialog(){
+        if(loadingDialog != null && loadingDialog.isShow()){
+            loadingDialog.dismiss();
+        }
     }
 }

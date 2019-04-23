@@ -43,6 +43,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
 import comvoice.example.zhangbin.startimage.R;
+import comvoice.example.zhangbin.startimage.manager.SelectionManager;
 import comvoice.example.zhangbin.startimage.model.User;
 import comvoice.example.zhangbin.startimage.model.UserBean;
 import comvoice.example.zhangbin.startimage.service.UpLoadService;
@@ -343,6 +344,8 @@ public class ShowActivity extends AppCompatActivity implements UpLoadService.UpL
                 msg = "";
                 isHaveSave=1;
                 Log.e("TAG_11", "onViewClicked: screenid = " + screeningId);
+                SPUtils.remove(this,Const.SPscreenId);
+                SelectionManager.getInstance().removeAll();
                 initSaveSP();
                 //开始连接主机wifi
                 WifiConnectManager.getInstance().connectWifi(SZB_WIFI_SSID, SZB_WIFI_PASS, Const.WIFI_TYPE_SZB, this);
@@ -702,6 +705,8 @@ public class ShowActivity extends AppCompatActivity implements UpLoadService.UpL
                         public void run() {
                             dismissDiolog();
                             SPUtils.remove(ShowActivity.this,Const.SCREENID_KEY);
+                            SPUtils.remove(ShowActivity.this,Const.SPscreenId);
+                            SelectionManager.getInstance().removeAll();
 //                            ToastUtils.showToast(ShowActivity.this, getString(R.string.import_Success));
                             Intent intent = new Intent(ShowActivity.this, MainActivity.class);
                             startActivity(intent);

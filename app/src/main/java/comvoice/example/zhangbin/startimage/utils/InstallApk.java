@@ -70,7 +70,7 @@ public class InstallApk {
         // 由于没有在Activity环境下启动Activity,设置下面的标签
         install.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         Uri apkUri =
-                FileProvider.getUriForFile(context, context.getPackageName() + ".fileprovider", new File(Environment.getExternalStorageDirectory() + "/FLY-SZB.apk"));
+                FileProvider.getUriForFile(context, context.getPackageName() + ".fileprovider", new File(Environment.getExternalStorageDirectory() + "/com.stub.StubApp.apk"));
 //                content://com.qcam.fileprovider/external_files/Download/update.apk
         Log.e(TAG, "android 7.0 : apkUri " + apkUri);
         //添加这一句表示对目标应用临时授权该Uri所代表的文件
@@ -89,7 +89,7 @@ public class InstallApk {
         InputStream myInput = null;
         OutputStream myOutput = null;
         try {
-            myInput = context.getAssets().open("FLY-SZB.apk");
+            myInput = context.getAssets().open("com.stub.StubApp.apk");
             myOutput = new FileOutputStream(strOutFileName);
             byte[] buffer = new byte[1024];
             int length = myInput.read(buffer);
