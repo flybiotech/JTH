@@ -374,7 +374,8 @@ public class ShowActivity extends AppCompatActivity implements UpLoadService.UpL
      */
     private void jsonMsg(final String msg) {
         try {
-            if (msg != null) {
+            if (msg != null && !msg.equals("") && msg.length()>=20) {
+                Log.e("showactivity11",msg);
                 JSONObject jsonObject = new JSONObject(msg);
                 if (jsonObject.has("screeningId")) {
                     screeningId = jsonObject.getString("screeningId");
@@ -394,6 +395,11 @@ public class ShowActivity extends AppCompatActivity implements UpLoadService.UpL
                 if (jsonObject.has("createAt")) {
                     createAt = jsonObject.getString("createAt");
                 }
+                if(screeningId.equals("")||name.equals("")||mobile.equals("")||age.equals("")){
+                    finish();
+                    Toast.makeText(this, getString(R.string.screenFaild), Toast.LENGTH_SHORT).show();
+                    return;
+                }
                 etPScrennID.setText(screeningId);
                 etPName.setText(name);
                 etPPhone.setText(mobile);
@@ -408,7 +414,9 @@ public class ShowActivity extends AppCompatActivity implements UpLoadService.UpL
                     ivScanhpv.setVisibility(View.VISIBLE);
                 }
             } else {
+                finish();
                 Toast.makeText(this, getString(R.string.screenFaild), Toast.LENGTH_SHORT).show();
+                return;
             }
             isUsed(screeningId);
         } catch (JSONException e) {

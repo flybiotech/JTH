@@ -4,9 +4,51 @@
     android:layout_height="match_parent"
     android:background="@color/bg_black">
 
-    <include
-        android:id="@+id/layout_actionBar"
-        layout="@layout/include_layout_actionbar" />
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="44dp"
+        android:background="@color/weakRed"
+        android:id="@+id/layout_actionBar">
+        <ImageView
+            android:id="@+id/iv_actionBar_back"
+            android:layout_width="@dimen/returnSize"
+            android:layout_height="@dimen/returnSize"
+            android:layout_centerVertical="true"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp"
+            android:background="@drawable/back" />
+
+        <TextView
+            android:id="@+id/tv_actionBar_title"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_toRightOf="@+id/iv_actionBar_back"
+            android:gravity="center"
+            android:text="@string/image_picker"
+            android:textSize="18sp" />
+        <TextView
+            android:id="@+id/tv_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/black"
+            android:layout_centerInParent="true"
+            android:textSize="18sp"
+            />
+        <Button
+            android:id="@+id/tv_actionBar_commit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/btn_bg"
+            android:gravity="center"
+            android:layout_alignParentRight="true"
+            android:text="@string/confirm"
+            android:layout_marginRight="@dimen/buttonsSizeEN"/>
+
+    </RelativeLayout>
+
+    <!--<include-->
+        <!--android:id="@+id/layout_actionBar"-->
+        <!--layout="@layout/include_layout_actionbar" />-->
 
     <RelativeLayout
         android:id="@+id/rl_main_bottom"
@@ -26,8 +68,8 @@
 
             <ImageView
                 android:id="@+id/iv_item_check"
-                android:layout_width="20dp"
-                android:layout_height="20dp"
+                android:layout_width="@dimen/buttonHeight"
+                android:layout_height="@dimen/buttonHeight"
                 android:layout_gravity="center_vertical"
                 android:layout_marginRight="6dp"
                 android:scaleType="centerCrop"
@@ -39,7 +81,7 @@
                 android:layout_gravity="center"
                 android:text="@string/image_select"
                 android:textColor="@color/black"
-                android:textSize="14sp"
+                android:textSize="@dimen/textSize"
                 />
             <!--<Button-->
                 <!--android:id="@+id/bt_delete"-->

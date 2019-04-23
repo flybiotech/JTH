@@ -4,7 +4,7 @@
     <dimen name="scrolWidth">15dp</dimen>
     <dimen name="buttonWidth">60dp</dimen>
     <dimen name="buttonHeight">30dp</dimen>
-
+    <dimen name="returnSize">35dp</dimen>
     <!-- title_item.xml  -->
 
     <dimen name="buttonsSizeEN">15dp</dimen>

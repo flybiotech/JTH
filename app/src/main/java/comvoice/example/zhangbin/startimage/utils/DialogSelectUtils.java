@@ -52,7 +52,7 @@ public class DialogSelectUtils {
         listView.setAdapter(arrayAdapter);
         arrayAdapter.notifyDataSetChanged();
         linearLayoutMain.addView(listView);//往这个布局中加入listview
-        select_dialog=new AlertDialog.Builder(mContext).setTitle("请选择").setView(linearLayoutMain).setPositiveButton("取消",null).create();
+        select_dialog=new AlertDialog.Builder(mContext).setTitle("请选择(筛查ID："+getSP()+")").setView(linearLayoutMain).setPositiveButton("取消",null).create();
         select_dialog.setOnShowListener(new DialogInterface.OnShowListener() {
             @Override
             public void onShow(DialogInterface dialog) {

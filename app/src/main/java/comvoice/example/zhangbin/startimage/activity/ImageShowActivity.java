@@ -1,10 +1,8 @@
 package comvoice.example.zhangbin.startimage.activity;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
@@ -12,9 +10,10 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+
 import com.lcw.library.imagepicker.view.HackyViewPager;
 
-import java.util.ArrayList;
+import java.io.File;
 import java.util.List;
 
 import butterknife.BindView;
@@ -26,7 +25,6 @@ import comvoice.example.zhangbin.startimage.manager.SelectionManager;
 import comvoice.example.zhangbin.startimage.sp.SPUtils;
 import comvoice.example.zhangbin.startimage.utils.CaseListUtils;
 import comvoice.example.zhangbin.startimage.utils.Const;
-import comvoice.example.zhangbin.startimage.utils.FileUtils;
 import comvoice.example.zhangbin.startimage.utils.SouthUtil;
 
 public class ImageShowActivity extends AppCompatActivity {
@@ -46,10 +44,16 @@ public class ImageShowActivity extends AppCompatActivity {
     HackyViewPager vpMainPreImage;
     @BindView(R.id.iv_main_play)
     ImageView ivMainPlay;
+    @BindView(R.id.tv_title)
+    TextView tvTitle;
+    @BindView(R.id.layout_actionBar)
+    RelativeLayout layoutActionBar;
+
     private List<String> urls = null;//显示的图片的集合
     private ImagePreViewAdapter imagePreViewAdapter;
     private CaseListUtils caseListUtils;
     private String TAG_IMAGE = "imageshow_";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -72,6 +76,7 @@ public class ImageShowActivity extends AppCompatActivity {
             @Override
             public void onPageSelected(int position) {
                 tvActionBarTitle.setText(String.format("%d/%d", position + 1, urls.size()));
+                tvTitle.setText(new File(urls.get(position)).getName());
 //                setIvPlayShow(urls.get(position));
                 updateSelectButton(urls.get(position));
             }
@@ -82,17 +87,7 @@ public class ImageShowActivity extends AppCompatActivity {
             }
         });
     }
-    /**
-     * 设置是否显示视频播放按钮
-     * @param mediaFile
-     */
-    private void setIvPlayShow(String mediaFile) {
-//        if (mediaFile.getDuration() > 0) {
-//            mIvPlay.setVisibility(View.VISIBLE);
-//        } else {
-        ivMainPlay.setVisibility(View.GONE);
-//        }
-    }
+
     private void initView() {
         caseListUtils = new CaseListUtils(this);
 
@@ -108,70 +103,69 @@ public class ImageShowActivity extends AppCompatActivity {
                 break;
             case R.id.tv_actionBar_commit:
                 Const.stringList = SelectionManager.getInstance().getSelectPaths();
-                SPUtils.setPathList(this,Const.SPscreenId,Const.stringList);
+                SPUtils.setPathList(this, Const.SPscreenId, Const.stringList);
                 SelectionManager.getInstance().removeAll();
                 finish();
                 break;
             case R.id.ll_pre_select:
-                if(urls == null || urls.size() == 0){
+                if (urls == null || urls.size() == 0) {
                     return;
                 }
                 boolean addsuccess = SelectionManager.getInstance().addImageToSelectList(urls.get(vpMainPreImage.getCurrentItem()));
-                if(addsuccess){
+                if (addsuccess) {
                     updateSelectButton(urls.get(vpMainPreImage.getCurrentItem()));
                     updateCommitButton();
-                }else {
-                    SouthUtil.showToast(this,"还未选择图片");
+                } else {
+                    SouthUtil.showToast(this, "还未选择图片");
                 }
                 break;
         }
     }
+
     private int mPosition = 0;
     public static final String IMAGE_POSITION = "imagePosition";
     //得到本地数据源
 
-    private void getDate(){
+    private void getDate() {
         urls = caseListUtils.ImageShow();
-       if(urls == null || urls.size() == 0){
-           return;
-       }
+        if (urls == null || urls.size() == 0) {
+            return;
+        }
         SelectionManager.getInstance().setMaxCount(urls.size());
-        mPosition = getIntent().getIntExtra(IMAGE_POSITION,0);
-        tvActionBarTitle.setText(String.format("%d/%d",mPosition+1,urls.size()));
-        imagePreViewAdapter = new ImagePreViewAdapter(this,urls);
+        mPosition = getIntent().getIntExtra(IMAGE_POSITION, 0);
+        tvActionBarTitle.setText(String.format("%d/%d", mPosition + 1, urls.size()));
+        imagePreViewAdapter = new ImagePreViewAdapter(this, urls);
         vpMainPreImage.setAdapter(imagePreViewAdapter);
         vpMainPreImage.setCurrentItem(mPosition);
         //更新当前页面状态
         updateSelectButton(urls.get(mPosition));
+        tvTitle.setText(new File(urls.get(mPosition)).getName());
         updateCommitButton();
     }
 
 
     //更新确认按钮的状态
-    List<String>stringList;
-    private void updateCommitButton(){
-        if(urls == null){
+    List<String> stringList;
+
+    private void updateCommitButton() {
+        if (urls == null) {
             return;
         }
         int maxCount = urls.size();
         int selectCount = 0;
-        stringList = SPUtils.getPathList(this,Const.SPscreenId);
-//        if(null == stringList){
-            selectCount = SelectionManager.getInstance().getSelectPaths().size();
-//        }else {
-//            selectCount = stringList.size();
-//        }
-        if(selectCount == 0){
+        stringList = SPUtils.getPathList(this, Const.SPscreenId);
+        selectCount = SelectionManager.getInstance().getSelectPaths().size();
+        if (selectCount == 0) {
             tvActionBarCommit.setEnabled(false);
             tvActionBarCommit.setText(getText(R.string.button_ok));
             return;
         }
-        if(selectCount < maxCount){
+        if (selectCount < maxCount) {
             tvActionBarCommit.setEnabled(true);
             tvActionBarCommit.setText(String.format(getString(R.string.confirm_msg), selectCount, maxCount));
             return;
         }
-        if(selectCount == maxCount){
+        if (selectCount == maxCount) {
             tvActionBarCommit.setEnabled(true);
             tvActionBarCommit.setText(String.format(getString(R.string.confirm_msg), selectCount, maxCount));
             return;
@@ -179,12 +173,16 @@ public class ImageShowActivity extends AppCompatActivity {
     }
 
     //更新选择按钮状态
-    private void updateSelectButton(String imagePath){
+    private void updateSelectButton(String imagePath) {
         boolean isSelect = SelectionManager.getInstance().isImageSelect(imagePath);
-        if(isSelect){
-            ivItemCheck.setImageDrawable(getResources().getDrawable(R.drawable.icon_image_checked));
-        }else {
-            ivItemCheck.setImageDrawable(getResources().getDrawable(R.drawable.icon_image_check));
+        if (isSelect) {
+            ivItemCheck.setImageDrawable(getResources().getDrawable(R.drawable.selected));
+        } else {
+            ivItemCheck.setImageDrawable(getResources().getDrawable(R.drawable.select));
         }
+    }
+
+    @OnClick(R.id.tv_title)
+    public void onViewClicked() {
     }
 }
