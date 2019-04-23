@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical">
 
     <include layout="@layout/title_bar"></include>
@@ -13,15 +13,15 @@
         android:background="#fff"
         android:fadeScrollbars="false"
         android:scrollbarSize="@dimen/scrolWidth"
-        android:scrollbarThumbVertical="@color/viewfinder_mask"
-        >
+        android:scrollbarThumbVertical="@color/viewfinder_mask">
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginTop="5dp"
-            android:orientation="vertical"
             android:layout_marginEnd="20dp"
-            android:layout_marginRight="20dp">
+            android:layout_marginRight="20dp"
+            android:orientation="vertical">
 
             <TextView
                 android:layout_width="match_parent"
@@ -31,6 +31,7 @@
                 android:textAllCaps="false"
                 android:textColor="@color/textcase"
                 android:textSize="@dimen/textViewNameSize" />
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -41,55 +42,64 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@drawable/edittext_select"
-                    android:paddingBottom="5dp"
                     android:paddingLeft="5dp"
                     android:paddingTop="5dp"
+                    android:paddingBottom="5dp"
                     android:text=" "
                     android:textAllCaps="false"
                     android:textSize="@dimen/textViewNameSize" />
             </LinearLayout>
 
-            <LinearLayout
-                android:layout_width="match_parent"
+            <TextView
+                android:id="@+id/tv_imagenameshow01"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                android:paddingBottom="15dp"
-                android:orientation="vertical">
+                android:text="@string/case_image_show"
+                android:textColor="@color/textcase"
+                android:textSize="@dimen/textViewNameSize" />
 
-                <TextView
-                    android:id="@+id/tv_imagenameshow01"
+            <android.support.constraint.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:paddingBottom="15dp">
+
+
+                <ImageView
+                    android:id="@+id/imageleft"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/case_image_show"
-                    android:textColor="@color/textcase"
-                    android:textSize="@dimen/textViewNameSize" />
+                    android:src="@drawable/imageselectleft"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintRight_toLeftOf="@id/cb_show"
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:layout_marginRight="10dp"
+                    />
 
                 <com.bigkoo.convenientbanner.ConvenientBanner
                     android:id="@+id/cb_show"
                     android:layout_width="500dp"
                     android:layout_height="300dp"
-                    android:layout_gravity="center"
                     android:layout_marginTop="10dp"
-                    app:canLoop="true"
-                   />
+                    app:canLoop="false"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
+                <ImageView
+                    android:id="@+id/imageright"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/imageselectright"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintLeft_toRightOf="@id/cb_show"
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:layout_marginLeft="10dp"
+                    />
 
-            </LinearLayout>
+            </android.support.constraint.ConstraintLayout>
 
-            <!--<TextView-->
-                <!--android:id="@+id/tv_case_video"-->
-                <!--android:layout_width="wrap_content"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:text="@string/case_image_video"-->
-                <!--android:textSize="@dimen/textViewNameSize"-->
-                <!--android:textColor="@color/textcase"-->
-                <!--/>-->
-
-            <!--<ListView-->
-                <!--android:id="@+id/case_recycler_vdieo"-->
-                <!--android:layout_width="match_parent"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:layout_marginBottom="30dp"></ListView>-->
 
         </LinearLayout>
 

@@ -3,6 +3,7 @@ package comvoice.example.zhangbin.startimage.utils;
 import android.content.Context;
 import android.os.Environment;
 import android.support.v4.view.ViewPager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
@@ -11,6 +12,8 @@ import android.widget.TextView;
 import com.bigkoo.convenientbanner.ConvenientBanner;
 import com.bigkoo.convenientbanner.holder.CBViewHolderCreator;
 import com.bigkoo.convenientbanner.holder.Holder;
+import com.bigkoo.convenientbanner.listener.OnItemClickListener;
+import com.bigkoo.convenientbanner.listener.OnPageChangeListener;
 import com.bumptech.glide.Glide;
 
 import org.litepal.LitePal;
@@ -42,6 +45,7 @@ public class DetailsUtils {
     private List<String> videoPathlist;//视频地址集合
     private ConvenientBanner convenientBanner;//轮播
     private TextView tv_imagenameshow01;//图片展示
+    private int imageSize = 0;
     public DetailsUtils(Context context,TextView tv_show,List<User>userList){
         this.context=context;
         this.tv_show=tv_show;
@@ -225,126 +229,150 @@ public class DetailsUtils {
         }
         return listImagePath;
     }
-//    public void videoShow(User listMessage,OnShowContentListener listener) {
-//
-//        if (listMessage==null)return;
-////        if (videoList == null) {
-////            videoList = new ArrayList<>();
-////        } else {
-////            videoList.clear();
-////        }
-//
-//        if (videoPathlist == null) {
-//            videoPathlist = new ArrayList<>();
-//        } else {
-//            videoPathlist.clear();
-//        }
-//
-//        Observable.create(new Observable.OnSubscribe<List<String>>() {
-//            @Override
-//            public void call(Subscriber<? super List<String>> subscriber) {
-//
-//                String videoPath = listMessage.getVedioPath();
-//                if (new File(videoPath).exists()) {
-//                    File[] files = new File(videoPath).listFiles(new FilenameFilter() {
-//                        @Override
-//                        public boolean accept(File dir, String name) {
-//                            boolean a = false;
-//                            if (name.endsWith(".mp4")) {//所有.jpg格式的文件添加到数组中
-//                                a = true;
-//                            }
-//                            return a;
-//                        }
-//                    });
-//                    if (files != null && files.length > 0) {
-//                        for (File file1 : files) {
-//                            if (file1.getName().endsWith(".mp4")) ;
-////                            videoList.add(file1.getName());
-//                            videoPathlist.add(file1.getAbsolutePath());
-//                        }
-//                    }
-//                }
-//
-//                subscriber.onNext(videoPathlist);
-//
-//
-//            }
-//        })
-//                .subscribeOn(Schedulers.io())
-//                .observeOn(AndroidSchedulers.mainThread())
-//                .subscribe(new Action1<List<String>>() {
-//                    @Override
-//                    public void call(List<String> s) {
-////
-//                        listener.showVideo(s);
-//
-//
-//                    }
-//                });
-//
-//
-//
-//
-//
-//    }
+
     /**
      * 图片翻页监视
      */
-    public void lunbo(List<String>list) {
+    public void lunbo(List<String>list, OnItemClickListener onItemClickListener) {
+        imageSize = list.size();
 //        List<String> list = ImageShow();
         //自定义你的Holder，实现更多复杂的界面，不一定是图片翻页，其他任何控件翻页亦可。
-        convenientBanner.setPages(new CBViewHolderCreator<LocalImageHolderView>() {
-            @Override
-            public LocalImageHolderView createHolder() {
+//        convenientBanner.setPages(new CBViewHolderCreator<LocalImageHolderView>() {
+//            @Override
+//            public LocalImageHolderView createHolder() {
+//
+//                return new LocalImageHolderView();
+//            }
+//        }, list)
+//                //设置两个点图片作为翻页指示器，不设置则没有指示器，可以根据自己需求自行配合自己的指示器,不需要圆点指示器可用不设
+//                .setPageIndicator(new int[]{R.drawable.ic_page_indicator, R.drawable.ic_page_indicator_focused})
+//                //设置指示器的方向
+//                .setPageIndicatorAlign(ConvenientBanner.PageIndicatorAlign.CENTER_HORIZONTAL);
 
-                return new LocalImageHolderView();
-            }
-        }, list)
+//        convenientBanner = (ConvenientBanner)header.findViewById(R.id.convenientBanner) ;
+
+//        loadTestDatas();
+        //本地图片例子
+        convenientBanner.setPages(
+                new CBViewHolderCreator() {
+                    @Override
+                    public LocalImageHolderView createHolder(View itemView) {
+                        return new LocalImageHolderView(itemView);
+                    }
+
+                    @Override
+                    public int getLayoutId() {
+                        return R.layout.item_localimage;
+                    }
+                }, list)
                 //设置两个点图片作为翻页指示器，不设置则没有指示器，可以根据自己需求自行配合自己的指示器,不需要圆点指示器可用不设
                 .setPageIndicator(new int[]{R.drawable.ic_page_indicator, R.drawable.ic_page_indicator_focused})
-                //设置指示器的方向
-                .setPageIndicatorAlign(ConvenientBanner.PageIndicatorAlign.CENTER_HORIZONTAL)
-        ;
+                .setOnItemClickListener(onItemClickListener);
+
     }
 
     /**
      * 轮播回调接口
      */
-    class LocalImageHolderView implements Holder<String> {
+    class LocalImageHolderView extends Holder<String> {
         private ImageView imageView;
 
-        @Override
-        public View createView(Context context) {
-            imageView = new ImageView(context);
-            imageView.setScaleType(ImageView.ScaleType.CENTER);
-            return imageView;
+        public LocalImageHolderView(View itemView) {
+            super(itemView);
         }
 
         @Override
-        public void UpdateUI(Context context, final int position, final String data) {
-//            final List<String> list = ImageShow();
-            convenientBanner.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+        protected void initView(View itemView) {
+            imageView =itemView.findViewById(R.id.ivPost);
+        }
+
+        @Override
+        public void updateUI(String data) {
+            convenientBanner.setOnPageChangeListener(new OnPageChangeListener() {
                 @Override
-                public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+                public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
 
                 }
 
                 @Override
-                public void onPageSelected(int position) {
-                    if (imageAll!=null)
-                        tv_imagenameshow01.setText("图片展示 ： " + new File(imageAll.get(position)).getName());
+                public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+
                 }
 
                 @Override
-                public void onPageScrollStateChanged(int state) {
+                public void onPageSelected(int index) {
+                    if (imageAll != null) {
+
+                        tv_imagenameshow01.setText("图片展示 ： " + new File(imageAll.get(index)).getName());
+                    }
 
                 }
             });
+
             Glide.with(context).load(data)
                     .into(imageView);
         }
 
+
+//        @Override
+//        public View createView(Context context) {
+//            imageView = new ImageView(context);
+//            imageView.setScaleType(ImageView.ScaleType.CENTER);
+//            return imageView;
+//        }
+//
+//        @Override
+//        public void UpdateUI(Context context, final int position, final String data) {
+////            final List<String> list = ImageShow();
+//            convenientBanner.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+//                @Override
+//                public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+//
+//                }
+//
+//                @Override
+//                public void onPageSelected(int position) {
+//                    Log.i("TAG_11", "onPageSelected: position = "+position);
+//                    if (imageAll!=null)
+//                        tv_imagenameshow01.setText("图片展示 ： " + new File(imageAll.get(position)).getName());
+//                }
+//
+//                @Override
+//                public void onPageScrollStateChanged(int state) {
+//
+//                }
+//            });
+//            Glide.with(context).load(data)
+//                    .into(imageView);
+//        }
+
+
     }
+
+
+
+
+
+
+    public int  setCurrentPosition(int pos) {
+        if (pos >= imageSize) {
+            return 1;
+        } else if (pos<0) {
+            return 2;
+        }
+        convenientBanner.setCurrentItem(pos,true);
+        return 3;
+    }
+
+
+
+
+    public int getCurrentPosition() {
+        if (convenientBanner == null) return 0;
+        return convenientBanner.getCurrentItem();
+    }
+
+
     public interface OnShowContentListener{
 
         void initView(List<User> listMsg);

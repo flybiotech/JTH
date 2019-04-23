@@ -28,4 +28,7 @@ public class PreviewActivity extends BaseActivity {
                 .into(imageview);
         imageview.setImage(bp);
     }
+
+
+
 }

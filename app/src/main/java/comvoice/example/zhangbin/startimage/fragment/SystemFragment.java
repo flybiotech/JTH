@@ -1,13 +1,9 @@
 package comvoice.example.zhangbin.startimage.fragment;
 
 
-
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v7.app.ActionBar;
-import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,7 +11,6 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
@@ -25,13 +20,11 @@ import android.widget.Toast;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 import comvoice.example.zhangbin.startimage.R;
-import comvoice.example.zhangbin.startimage.activity.DeleteSettingActivity;
-import comvoice.example.zhangbin.startimage.activity.FTPSettingActivity;
-import comvoice.example.zhangbin.startimage.activity.UploadActivity;
 import comvoice.example.zhangbin.startimage.activity.WifiSettingActivity;
 import comvoice.example.zhangbin.startimage.sp.SPUtils;
 import comvoice.example.zhangbin.startimage.utils.Const;

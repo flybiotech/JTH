@@ -65,7 +65,8 @@ dependencies {
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
     implementation files('libs/jxl.jar')
     implementation files('libs/commons-net-2.2.jar')
-    implementation 'com.bigkoo:convenientbanner:2.0.5'
+//    implementation 'com.bigkoo:convenientbanner:2.0.5'
+    implementation 'com.bigkoo:ConvenientBanner:2.1.4'
     implementation 'io.reactivex:rxandroid:1.1.0'
     implementation 'com.thanosfisherman.wifiutils:wifiutils:1.4.0'
     implementation 'com.squareup.okhttp3:okhttp:3.12.0'
@@ -85,4 +86,5 @@ dependencies {
     annotationProcessor 'com.github.bumptech.glide:compiler:4.9.0'
 
     implementation 'com.google.code.gson:gson:2.8.5'
+    implementation 'com.orhanobut:logger:2.2.0'
 }

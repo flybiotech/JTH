@@ -20,6 +20,7 @@ public class MyApplication extends LitePalApplication {
         super.onCreate();
         myApplication=this;
         LitePal.initialize(this);
+        CrashHandler.getInstance().init(this);
         CrashReport.initCrashReport(getApplicationContext(), "d59652b980", true);
     }
 

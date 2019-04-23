@@ -30,8 +30,10 @@ import comvoice.example.zhangbin.startimage.R;
 import comvoice.example.zhangbin.startimage.model.User;
 import comvoice.example.zhangbin.startimage.utils.CaseListUtils;
 import comvoice.example.zhangbin.startimage.utils.DetailsUtils;
+import comvoice.example.zhangbin.startimage.utils.SouthUtil;
 
-public class MessageDetailsActivity extends AppCompatActivity implements DetailsUtils.OnShowContentListener, OnItemClickListener, AdapterView.OnItemClickListener{
+public class MessageDetailsActivity extends AppCompatActivity implements DetailsUtils.OnShowContentListener,
+        OnItemClickListener, AdapterView.OnItemClickListener, View.OnClickListener {
 
     @BindView(R.id.tv_title)
     TextView tvTitle;
@@ -45,10 +47,11 @@ public class MessageDetailsActivity extends AppCompatActivity implements Details
     TextView tvImagenameshow01;
     @BindView(R.id.cb_show)
     ConvenientBanner cbShow;
-//    @BindView(R.id.tv_case_video)
-//    TextView tvCaseVideo;
-//    @BindView(R.id.case_recycler_vdieo)
-//    ListView caseRecyclerVdieo;
+    @BindView(R.id.imageleft)
+    ImageView imageLeft;
+    @BindView(R.id.imageright)
+    ImageView imageRight;
+
     DetailsUtils detailsUtils;
     String screenID = "";
     @BindView(R.id.btn_left)
@@ -71,18 +74,46 @@ public class MessageDetailsActivity extends AppCompatActivity implements Details
     private void initView() {
         btnLeft.setVisibility(View.VISIBLE);
         btnLeft.setText(R.string.case_return);
-        cbShow.setOnItemClickListener(this);
+        btnLeft.setOnClickListener(this);
+        imageLeft.setOnClickListener(this);
+        imageRight.setOnClickListener(this);
+
+
         detailsUtils = new DetailsUtils(MessageDetailsActivity.this,cbShow,tvImagenameshow01);
         detailsUtils.initView(screenID,MessageDetailsActivity.this);
-//        detailsUtils.initDetils();
+
     }
 
-    @OnClick(R.id.btn_left)
-    public void onViewClicked() {
-        Intent intent=new Intent(MessageDetailsActivity.this,MainActivity.class);
-        intent.putExtra("canshu",1);
-        startActivity(intent);
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.btn_left:
+                Intent intent=new Intent(MessageDetailsActivity.this,MainActivity.class);
+                intent.putExtra("canshu",1);
+                startActivity(intent);
+                break;
+
+            case R.id.imageleft:
+                int i=detailsUtils.setCurrentPosition(detailsUtils.getCurrentPosition()-1);
+                if (i == 2) {
+                    SouthUtil.showToast(this,getString(R.string.case_imageFirst));
+                }
+                break;
+
+            case R.id.imageright:
+                int a=detailsUtils.setCurrentPosition(detailsUtils.getCurrentPosition()+1);
+
+                if (a == 1) {
+                    SouthUtil.showToast(this,getString(R.string.case_imageLast));
+                }
+                break;
+
+        }
+
     }
+
+
 
     @Override
     public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
@@ -115,7 +146,7 @@ public class MessageDetailsActivity extends AppCompatActivity implements Details
             tvImagenameshow01.setText("图片展示 ： " + new File(imageAll.get(0)).getName());
         }
 
-        detailsUtils.lunbo(imageAll);
+        detailsUtils.lunbo(imageAll,this);
 //        detailsUtils.videoShow(msg, this);
     }
 
@@ -123,4 +154,9 @@ public class MessageDetailsActivity extends AppCompatActivity implements Details
     public void showVideo(List<String> listVideoPath) {
 
     }
+
+
+
+
+
 }
