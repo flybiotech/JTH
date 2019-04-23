@@ -73,7 +73,7 @@ public class DetailsUtils {
             endList1.add(context.getString(R.string.screenId).length());
             listAllLength1.add(sb1.toString().length());
 
-            sb1.append(context.getText(R.string.pName)+" : "+userList.get(0).getPhone()+"\n\n");
+            sb1.append(context.getText(R.string.pName)+" : "+userList.get(0).getName()+"\n\n");
             startList1.add(listAllLength1.get(0));
             endList1.add(listAllLength1.get(0)+context.getText(R.string.pName).length());
             listAllLength1.add(sb1.toString().length());
