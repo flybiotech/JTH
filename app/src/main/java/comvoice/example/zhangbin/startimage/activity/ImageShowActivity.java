@@ -102,7 +102,7 @@ public class ImageShowActivity extends AppCompatActivity {
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.iv_actionBar_back:
-                SPUtils.remove(this,Const.SPscreenId);
+//                SPUtils.remove(this,Const.SPscreenId);
                 SelectionManager.getInstance().removeAll();
                 finish();
                 break;
