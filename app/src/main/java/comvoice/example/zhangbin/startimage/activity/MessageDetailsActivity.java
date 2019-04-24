@@ -96,31 +96,14 @@ public class MessageDetailsActivity extends AppCompatActivity implements Details
                 break;
 
             case R.id.imageleft:
-                setCurPos(1);
-//                int pos = detailsUtils.getCurrentPosition();
-//                if (pos < -1) {
-//                    SouthUtil.showToast(this, getString(R.string.case_imageNo));
-//                } else {
-//                    int i = detailsUtils.setCurrentPosition(pos - 1);
-//                    if (i == 2) {
-//                        SouthUtil.showToast(this, getString(R.string.case_imageFirst));
-//                    }
-//                }
+                setCurPos(2);
+
 
                 break;
 
             case R.id.imageright:
-                setCurPos(2);
-//                int pos1 = detailsUtils.getCurrentPosition();
-//                if (pos1 < -1) {
-//                    SouthUtil.showToast(this, getString(R.string.case_imageNo));
-//                } else {
-//                    int a = detailsUtils.setCurrentPosition(pos1 + 1);
-//
-//                    if (a == 1) {
-//                        SouthUtil.showToast(this, getString(R.string.case_imageLast));
-//                    }
-//                }
+                setCurPos(1);
+
 
                 break;
         }
