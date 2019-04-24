@@ -60,6 +60,7 @@ public class MessageDetailsActivity extends AppCompatActivity implements Details
     private User user = null;
     private String id;//接受传过来的id值
     private Adapter adapter;//视频展示的适配器
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -79,8 +80,8 @@ public class MessageDetailsActivity extends AppCompatActivity implements Details
         imageRight.setOnClickListener(this);
 
 
-        detailsUtils = new DetailsUtils(MessageDetailsActivity.this,cbShow,tvImagenameshow01);
-        detailsUtils.initView(screenID,MessageDetailsActivity.this);
+        detailsUtils = new DetailsUtils(MessageDetailsActivity.this, cbShow, tvImagenameshow01);
+        detailsUtils.initView(screenID, MessageDetailsActivity.this);
 
     }
 
@@ -89,30 +90,67 @@ public class MessageDetailsActivity extends AppCompatActivity implements Details
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.btn_left:
-                Intent intent=new Intent(MessageDetailsActivity.this,MainActivity.class);
-                intent.putExtra("canshu",1);
+                Intent intent = new Intent(MessageDetailsActivity.this, MainActivity.class);
+                intent.putExtra("canshu", 1);
                 startActivity(intent);
                 break;
 
             case R.id.imageleft:
-                int i=detailsUtils.setCurrentPosition(detailsUtils.getCurrentPosition()-1);
-                if (i == 2) {
-                    SouthUtil.showToast(this,getString(R.string.case_imageFirst));
-                }
+                setCurPos(1);
+//                int pos = detailsUtils.getCurrentPosition();
+//                if (pos < -1) {
+//                    SouthUtil.showToast(this, getString(R.string.case_imageNo));
+//                } else {
+//                    int i = detailsUtils.setCurrentPosition(pos - 1);
+//                    if (i == 2) {
+//                        SouthUtil.showToast(this, getString(R.string.case_imageFirst));
+//                    }
+//                }
+
                 break;
 
             case R.id.imageright:
-                int a=detailsUtils.setCurrentPosition(detailsUtils.getCurrentPosition()+1);
+                setCurPos(2);
+//                int pos1 = detailsUtils.getCurrentPosition();
+//                if (pos1 < -1) {
+//                    SouthUtil.showToast(this, getString(R.string.case_imageNo));
+//                } else {
+//                    int a = detailsUtils.setCurrentPosition(pos1 + 1);
+//
+//                    if (a == 1) {
+//                        SouthUtil.showToast(this, getString(R.string.case_imageLast));
+//                    }
+//                }
 
-                if (a == 1) {
-                    SouthUtil.showToast(this,getString(R.string.case_imageLast));
-                }
                 break;
-
         }
 
     }
 
+    private void setCurPos(int type) {
+        int pos = detailsUtils.getCurrentPosition();
+        int p = 0;
+        if (pos < -1) {
+            SouthUtil.showToast(this, getString(R.string.case_imageNo));
+            return;
+        }
+
+        if (type == 2) { //左边按钮的点击结果
+            p = detailsUtils.setCurrentPosition(pos - 1);
+
+        } else if(type==1){//右边按钮的点击结果
+            p = detailsUtils.setCurrentPosition(pos + 1);
+
+        }
+
+
+        if (p == 2) {
+            SouthUtil.showToast(this, getString(R.string.case_imageFirst));
+        } else if (p == 1) {
+            SouthUtil.showToast(this, getString(R.string.case_imageLast));
+        }
+
+    }
 
 
     @Override
@@ -131,9 +169,9 @@ public class MessageDetailsActivity extends AppCompatActivity implements Details
 
     @Override
     public void initView(List<User> listMsg) {
-        if(listMsg != null && listMsg.size() > 0){
+        if (listMsg != null && listMsg.size() > 0) {
             user = listMsg.get(0);
-            detailsUtils.initDetils(tvDengjiClm,listMsg);
+            detailsUtils.initDetils(tvDengjiClm, listMsg);
             detailsUtils.startImageShow(user, getString(R.string.image_artword), getString(R.string.image_acetic_acid_white),
                     getString(R.string.image_Lipiodol), MessageDetailsActivity.this);
         }
@@ -146,7 +184,7 @@ public class MessageDetailsActivity extends AppCompatActivity implements Details
             tvImagenameshow01.setText("图片展示 ： " + new File(imageAll.get(0)).getName());
         }
 
-        detailsUtils.lunbo(imageAll,this);
+        detailsUtils.lunbo(imageAll, this);
 //        detailsUtils.videoShow(msg, this);
     }
 
@@ -154,9 +192,6 @@ public class MessageDetailsActivity extends AppCompatActivity implements Details
     public void showVideo(List<String> listVideoPath) {
 
     }
-
-
-
 
 
 }

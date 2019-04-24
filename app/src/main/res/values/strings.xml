@@ -94,6 +94,7 @@
     <string name="case_return">返回</string>
     <string name="case_imageFirst">第一张图片</string>
     <string name="case_imageLast">最后一张图片</string>
+    <string name="case_imageNo">暂无图片</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="patient_select">查询</string>

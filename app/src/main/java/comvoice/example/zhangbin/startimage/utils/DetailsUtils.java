@@ -355,9 +355,9 @@ public class DetailsUtils {
 
 
     public int  setCurrentPosition(int pos) {
-        if (pos >= imageSize) {
+        if (pos >= imageSize) { //右边的点击
             return 1;
-        } else if (pos<0) {
+        } else if (pos<0) { //左边按钮的点击
             return 2;
         }
         convenientBanner.setCurrentItem(pos,true);
@@ -368,7 +368,10 @@ public class DetailsUtils {
 
 
     public int getCurrentPosition() {
-        if (convenientBanner == null) return 0;
+        if (convenientBanner == null) return -2;
+        if (imageSize == 0) {
+            return -2;
+        }
         return convenientBanner.getCurrentItem();
     }
 
